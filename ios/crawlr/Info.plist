@@ -59,6 +59,9 @@
 		<string>Quicksand-Light.ttf</string>
 		<string>Quicksand-Medium.ttf</string>
 		<string>Quicksand-Regular.ttf</string>
+		<string>Quicksand-Bold.otf</string>
+		<string>Quicksand-Light.otf</string>
+		<string>Quicksand-Regular.otf</string>
 	</array>
 </dict>
 </plist>

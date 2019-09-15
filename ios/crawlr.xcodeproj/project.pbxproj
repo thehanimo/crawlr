@@ -5,9 +5,9 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* crawlrTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* crawlrTests.m */; };
+		0F0BA3BD83304F82949CEFAE /* Quicksand-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = AFF931E9610A4CCD96F3E34E /* Quicksand-Bold.otf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -18,13 +18,12 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* crawlrTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* crawlrTests.m */; };
 		37300FB9232E83200055EAD0 /* text.png in Resources */ = {isa = PBXBuildFile; fileRef = 37300FB8232E83200055EAD0 /* text.png */; };
-		6DD050AB7DB940DCACEDEF60 /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12E3FD6495DC44838F87EC68 /* Quicksand-Light.ttf */; };
 		81DAFD50F8837A12C1FA58E7 /* libPods-crawlrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0438E8906D0FBE218ED13C6 /* libPods-crawlrTests.a */; };
-		9F10CC8B4BDD4836BCA22517 /* Quicksand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3D256441C6094714A078B0F4 /* Quicksand-Regular.ttf */; };
+		A204573D7E5447939A98F8F6 /* Quicksand-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 19B949A5EC38456DB0919DEC /* Quicksand-Light.otf */; };
+		B61DAC1FDE5E4AD1A00B1CD4 /* Quicksand-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B10010A274BF49EC8947287D /* Quicksand-Regular.otf */; };
 		B8406115D7DAC6D75FDF6101 /* libPods-crawlr.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76F372088B5F4485B1E15228 /* libPods-crawlr.a */; };
 		D973370D79E04B45843E0B34 /* Quicksand-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 740B50E9449A43028D58DF4E /* Quicksand-Medium.ttf */; };
 		DD234B4C04E423885B27622F /* libPods-crawlr-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5306AFB36354BDB161AD46A /* libPods-crawlr-tvOS.a */; };
-		F26E4F35823E40CEB340A752 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF17BAC67FA24E1EB3010EA3 /* Quicksand-Bold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,7 +49,6 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* crawlrTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = crawlrTests.m; sourceTree = "<group>"; };
 		02AC45692DE4A8AE5022835C /* Pods-crawlr-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crawlr-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-crawlr-tvOSTests/Pods-crawlr-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		12E3FD6495DC44838F87EC68 /* Quicksand-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Light.ttf"; path = "../assets/fonts/Quicksand-Light.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* crawlr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = crawlr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = crawlr/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = crawlr/AppDelegate.m; sourceTree = "<group>"; };
@@ -59,20 +57,21 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = crawlr/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = crawlr/main.m; sourceTree = "<group>"; };
 		172FB6B389D37090ED4A6356 /* Pods-crawlr-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crawlr-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-crawlr-tvOS/Pods-crawlr-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		19B949A5EC38456DB0919DEC /* Quicksand-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Light.otf"; path = "../assets/fonts/Quicksand-Light.otf"; sourceTree = "<group>"; };
 		1A09B892C29FCEF6BF3927C9 /* Pods-crawlr-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crawlr-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-crawlr-tvOSTests/Pods-crawlr-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		1D0FEB7C5BD266A6316D54FB /* libPods-crawlr-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-crawlr-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E47B1E0B4A5D006451C7 /* crawlr-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "crawlr-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* crawlr-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "crawlr-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		37300FB8232E83200055EAD0 /* text.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = text.png; path = ../../text.png; sourceTree = "<group>"; };
-		3D256441C6094714A078B0F4 /* Quicksand-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Regular.ttf"; path = "../assets/fonts/Quicksand-Regular.ttf"; sourceTree = "<group>"; };
 		5B38987994E0126A2AFFCDC9 /* Pods-crawlr-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crawlr-tvOS.release.xcconfig"; path = "Target Support Files/Pods-crawlr-tvOS/Pods-crawlr-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		740B50E9449A43028D58DF4E /* Quicksand-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Medium.ttf"; path = "../assets/fonts/Quicksand-Medium.ttf"; sourceTree = "<group>"; };
 		76F372088B5F4485B1E15228 /* libPods-crawlr.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-crawlr.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		79B339C35AEB1754F87F0CF8 /* Pods-crawlr.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crawlr.release.xcconfig"; path = "Target Support Files/Pods-crawlr/Pods-crawlr.release.xcconfig"; sourceTree = "<group>"; };
 		79D62466952FF344B7F93F01 /* Pods-crawlrTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crawlrTests.debug.xcconfig"; path = "Target Support Files/Pods-crawlrTests/Pods-crawlrTests.debug.xcconfig"; sourceTree = "<group>"; };
+		AFF931E9610A4CCD96F3E34E /* Quicksand-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Bold.otf"; path = "../assets/fonts/Quicksand-Bold.otf"; sourceTree = "<group>"; };
 		B0438E8906D0FBE218ED13C6 /* libPods-crawlrTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-crawlrTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B10010A274BF49EC8947287D /* Quicksand-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Regular.otf"; path = "../assets/fonts/Quicksand-Regular.otf"; sourceTree = "<group>"; };
 		B5306AFB36354BDB161AD46A /* libPods-crawlr-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-crawlr-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF17BAC67FA24E1EB3010EA3 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Bold.ttf"; path = "../assets/fonts/Quicksand-Bold.ttf"; sourceTree = "<group>"; };
 		DA6635006F324EF426B7AAF3 /* Pods-crawlr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crawlr.debug.xcconfig"; path = "Target Support Files/Pods-crawlr/Pods-crawlr.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -135,10 +134,10 @@
 		0EF3AA9B39124F629E1445B7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				BF17BAC67FA24E1EB3010EA3 /* Quicksand-Bold.ttf */,
-				12E3FD6495DC44838F87EC68 /* Quicksand-Light.ttf */,
 				740B50E9449A43028D58DF4E /* Quicksand-Medium.ttf */,
-				3D256441C6094714A078B0F4 /* Quicksand-Regular.ttf */,
+				AFF931E9610A4CCD96F3E34E /* Quicksand-Bold.otf */,
+				19B949A5EC38456DB0919DEC /* Quicksand-Light.otf */,
+				B10010A274BF49EC8947287D /* Quicksand-Regular.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -361,11 +360,11 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				F26E4F35823E40CEB340A752 /* Quicksand-Bold.ttf in Resources */,
-				6DD050AB7DB940DCACEDEF60 /* Quicksand-Light.ttf in Resources */,
 				37300FB9232E83200055EAD0 /* text.png in Resources */,
 				D973370D79E04B45843E0B34 /* Quicksand-Medium.ttf in Resources */,
-				9F10CC8B4BDD4836BCA22517 /* Quicksand-Regular.ttf in Resources */,
+				0F0BA3BD83304F82949CEFAE /* Quicksand-Bold.otf in Resources */,
+				A204573D7E5447939A98F8F6 /* Quicksand-Light.otf in Resources */,
+				B61DAC1FDE5E4AD1A00B1CD4 /* Quicksand-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
