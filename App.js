@@ -32,7 +32,6 @@ export default class App extends Component {
     if (routeName == 'login') accessToken = msg[0];
     NavigationService.navigate('landing', {
       accessToken: accessToken,
-      timestamp: new Date().toLocaleString(),
     });
   };
 

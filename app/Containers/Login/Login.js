@@ -15,6 +15,13 @@ import {PrimaryButton} from '../../Components/Button';
 
 const {height, width} = Dimensions.get('window');
 export default class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      profile: this.props.navigation.getParam('profile', ''),
+    };
+  }
+
   render() {
     return (
       <SafeAreaView style={{backgroundColor: COLORS.BG, flex: 1}}>
@@ -50,7 +57,7 @@ export default class Login extends Component {
                 style={{height: 24, width: 24, marginRight: 8}}
               />
               <RegularText size={20} textAlign="center">
-                Logged In
+                {this.state.profile.fullName}
               </RegularText>
             </PrimaryButton>
             <View style={{width: 200, marginTop: 60}}>
