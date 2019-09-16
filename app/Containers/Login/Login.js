@@ -8,16 +8,13 @@ import {
   Image,
   Dimensions,
   SafeAreaView,
-  Modal,
 } from 'react-native';
-import LottieView from 'lottie-react-native';
-
 import {COLORS} from '../../global/colors';
 import {RegularText, BoldText} from '../../Components/Text';
 import {PrimaryButton} from '../../Components/Button';
 
 const {height, width} = Dimensions.get('window');
-export default class Landing extends Component {
+export default class Login extends Component {
   render() {
     return (
       <SafeAreaView style={{backgroundColor: COLORS.BG, flex: 1}}>
@@ -53,7 +50,7 @@ export default class Landing extends Component {
                 style={{height: 24, width: 24, marginRight: 8}}
               />
               <RegularText size={20} textAlign="center">
-                Continue with LinkedIn
+                Logged In
               </RegularText>
             </PrimaryButton>
             <View style={{width: 200, marginTop: 60}}>
@@ -64,13 +61,6 @@ export default class Landing extends Component {
             </View>
           </View>
         </SafeAreaView>
-        <Modal visible transparent>
-          <LottieView
-            source={require('../../global/loader.json')}
-            autoPlay
-            loop
-          />
-        </Modal>
       </SafeAreaView>
     );
   }
