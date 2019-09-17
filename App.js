@@ -10,7 +10,7 @@ export default class App extends Component {
       Linking.getInitialURL()
         .then(url => {
           if (url) {
-            console.log('Initial url is: ' + url);
+            this.handleOpenURL(url);
           }
         })
         .catch(err => console.error('An error occurred', err));

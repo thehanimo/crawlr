@@ -11,8 +11,10 @@ export const RegularText = props => (
       color: props.color || COLORS.TEXT,
       fontFamily: 'Quicksand-Regular',
       textAlign: props.textAlign || 'left',
+      ...props.addStyle,
     }}
-    onPress={props.onPress}>
+    onPress={props.onPress}
+    {...props}>
     {props.children}
   </Text>
 );
@@ -24,8 +26,25 @@ export const BoldText = props => (
       color: props.color || COLORS.TEXT,
       fontFamily: 'Quicksand-Bold',
       textAlign: props.textAlign || 'left',
+      ...props.addStyle,
     }}
-    onPress={props.onPress}>
+    onPress={props.onPress}
+    {...props}>
+    {props.children}
+  </Text>
+);
+
+export const MediumText = props => (
+  <Text
+    style={{
+      fontSize: props.size || 20,
+      color: props.color || COLORS.TEXT,
+      fontFamily: 'Quicksand-Medium',
+      textAlign: props.textAlign || 'left',
+      ...props.addStyle,
+    }}
+    onPress={props.onPress}
+    {...props}>
     {props.children}
   </Text>
 );
