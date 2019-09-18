@@ -14,6 +14,7 @@ import {COLORS} from '../../global/colors';
 import {RegularText, BoldText, MediumText} from '../../Components/Text';
 import {PrimaryButton} from '../../Components/Button';
 import styled from 'styled-components';
+import {API} from '../../global/constants';
 
 const {height, width} = Dimensions.get('window');
 
@@ -52,6 +53,25 @@ export default class Login extends Component {
       fullName: '',
     };
   }
+
+  confirm = () => {
+    const profile = this.props.navigation.getParam('profile', {});
+    fetch(API + `/auth/confirm`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(profile),
+    })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        alert(error);
+      });
+  };
+
   render() {
     const profile = this.props.navigation.getParam('profile', {});
     let firstname = profile.fullName.split(' ')[0];
@@ -104,7 +124,7 @@ export default class Login extends Component {
           </View>
           <View style={{height: height / 6}} />
           <View style={{position: 'absolute', bottom: 0, alignSelf: 'center'}}>
-            <GoButton>
+            <GoButton onPress={this.confirm}>
               <BoldText size={26} color={'#fff'}>
                 Go
               </BoldText>

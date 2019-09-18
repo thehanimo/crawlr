@@ -29,10 +29,12 @@ export default class App extends Component {
     const routeName = route.split('/')[0];
     const msg = route.split('/').splice(1);
     let accessToken = '';
-    if (routeName == 'login') accessToken = msg[0];
-    NavigationService.navigate('landing', {
-      accessToken: accessToken,
-    });
+    if (routeName == 'login') {
+      accessToken = msg[0];
+      NavigationService.navigate('landing', {
+        accessToken: accessToken,
+      });
+    }
   };
 
   render() {

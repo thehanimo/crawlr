@@ -8,6 +8,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@ant-design/icons-react-native": "^1.0.2",
+    "babel-runtime": "^6.26.0",
     "lottie-ios": "3.0.3",
     "lottie-react-native": "^3.1.1",
     "react": "16.8.6",
