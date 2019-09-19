@@ -14,6 +14,17 @@ import Searches from './app/Containers/Searches/Searches';
 import Account from './app/Containers/Account/Account';
 
 const RootStack = createSwitchNavigator({
+  AuthStack: createStackNavigator(
+    {
+      landing: Landing,
+      login: Login,
+    },
+    {
+      defaultNavigationOptions: {
+        header: null,
+      },
+    },
+  ),
   UserStack: createBottomTabNavigator(
     {
       connect: {
@@ -137,17 +148,6 @@ const RootStack = createSwitchNavigator({
         indicatorStyle: {
           opacity: 0,
         },
-      },
-    },
-  ),
-  AuthStack: createStackNavigator(
-    {
-      landing: Landing,
-      login: Login,
-    },
-    {
-      defaultNavigationOptions: {
-        header: null,
       },
     },
   ),

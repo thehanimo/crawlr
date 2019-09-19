@@ -18,6 +18,7 @@ import {RegularText, BoldText} from '../../Components/Text';
 import {PrimaryButton} from '../../Components/Button';
 import {API} from '../../global/constants';
 import NavigationService from '../../../NavigationService';
+import {storeData} from '../../global/localStorage';
 
 const {height, width} = Dimensions.get('window');
 export default class Landing extends Component {
@@ -39,11 +40,19 @@ export default class Landing extends Component {
       .then(responseJson => {
         if (responseJson) {
           this.props.navigation.setParams({accessToken: ''});
-          this.setState({accessToken: ''}, () => {
-            NavigationService.navigate('login', {
-              profile: responseJson,
+          if (responseJson.JWT) {
+            storeData('JWT', responseJson.JWT).then(() => {
+              this.setState({accessToken: ''}, () => {
+                NavigationService.navigate('connect');
+              });
             });
-          });
+          } else {
+            this.setState({accessToken: ''}, () => {
+              NavigationService.navigate('login', {
+                profile: responseJson,
+              });
+            });
+          }
         }
       })
       .catch(error => {

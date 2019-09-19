@@ -15,6 +15,8 @@ import {RegularText, BoldText, MediumText} from '../../Components/Text';
 import {PrimaryButton} from '../../Components/Button';
 import styled from 'styled-components';
 import {API} from '../../global/constants';
+import {storeData} from '../../global/localStorage';
+import NavigationService from '../../../NavigationService';
 
 const {height, width} = Dimensions.get('window');
 
@@ -64,8 +66,13 @@ export default class Login extends Component {
       },
       body: JSON.stringify(profile),
     })
-      .then(response => {
-        console.log(response);
+      .then(response => response.json())
+      .then(responseJson => {
+        storeData('JWT', responseJson.JWT).then(() => {
+          this.setState({accessToken: ''}, () => {
+            NavigationService.navigate('connect');
+          });
+        });
       })
       .catch(error => {
         alert(error);

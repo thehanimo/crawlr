@@ -16,6 +16,7 @@ import {PrimaryButton} from '../../Components/Button';
 import styled from 'styled-components';
 import {API} from '../../global/constants';
 import Header from '../../Components/Header';
+import {getData} from '../../global/localStorage';
 
 const {height, width} = Dimensions.get('window');
 
@@ -53,6 +54,12 @@ export default class Connect extends Component {
     this.state = {
       fullName: '',
     };
+  }
+
+  componentDidMount() {
+    getData('JWT').then(token => {
+      alert(JSON.stringify(token));
+    });
   }
 
   render() {
