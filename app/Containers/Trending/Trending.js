@@ -16,6 +16,7 @@ import {PrimaryButton} from '../../Components/Button';
 import styled from 'styled-components';
 import {API} from '../../global/constants';
 import Header from '../../Components/Header';
+import {TrendingCard} from '../../Components/TrendingCard';
 
 const {height, width} = Dimensions.get('window');
 
@@ -41,7 +42,22 @@ export default class Trending extends Component {
           flex: 1,
         }}>
         <Header title="Trending" />
-        <View style={{height: 100, width: 100, backgroundColor: 'blue'}}></View>
+        <ScrollView style={{flex: 1}}>
+          <TrendingCard text="google.com" score="999"></TrendingCard>
+          <TrendingCard text="google.com" score="12k"></TrendingCard>
+          <TrendingCard text="google.com" score="12k"></TrendingCard>
+          <TrendingCard text="google.com" score="12k"></TrendingCard>
+          <TrendingCard text="google.com" score="12k"></TrendingCard>
+          <TrendingCard text="google.com" score="12k"></TrendingCard>
+          <TrendingCard text="google.com" score="12k"></TrendingCard>
+          <TrendingCard text="google.com" score="12k"></TrendingCard>
+          <TrendingCard text="google.com" score="12k"></TrendingCard>
+          <TrendingCard text="google.com" score="12k"></TrendingCard>
+          <TrendingCard text="google.com" score="12k"></TrendingCard>
+          <TrendingCard text="google.com" score="12k"></TrendingCard>
+          <TrendingCard text="google.com" score="12k"></TrendingCard>
+          <TrendingCard text="google.com" score="12k"></TrendingCard>
+        </ScrollView>
       </SafeAreaView>
     );
   }

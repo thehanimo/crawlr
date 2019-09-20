@@ -65,6 +65,15 @@ export default class NavBar extends React.Component {
             shadowRadius: 4.65,
             elevation: 8,
           }}></BottomTabBar>
+        <View
+          style={{
+            backgroundColor: COLORS.ACCENT,
+            height: 100,
+            width: 70,
+            position: 'absolute',
+            alignSelf: 'center',
+          }}
+        />
         <TouchableOpacity
           onPress={() => this.setState({isSearchOpen: true})}
           style={{
@@ -88,6 +97,7 @@ export default class NavBar extends React.Component {
           }}>
           <IconOutline name="search" color={'#fff'} size={34} />
         </TouchableOpacity>
+
         <Modal visible={this.state.isSearchOpen} animationType="slide">
           <SafeAreaView style={{flex: 1, backgroundColor: COLORS.BG}}>
             <Header

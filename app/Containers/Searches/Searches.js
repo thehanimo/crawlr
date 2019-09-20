@@ -16,6 +16,7 @@ import {PrimaryButton} from '../../Components/Button';
 import styled from 'styled-components';
 import {API} from '../../global/constants';
 import Header from '../../Components/Header';
+import {SearchCard} from '../../Components/SearchCard';
 
 const {height, width} = Dimensions.get('window');
 
@@ -41,7 +42,13 @@ export default class Searches extends Component {
           flex: 1,
         }}>
         <Header title="My Searches" />
-        <View style={{height: 100, width: 100, backgroundColor: 'blue'}}></View>
+        <ScrollView>
+          <SearchCard text="google.com" pending />
+          <SearchCard text="google.com" pending />
+          <SearchCard text="google.com" done />
+          <SearchCard text="google.com" warning />
+          <SearchCard text="google.com" error />
+        </ScrollView>
       </SafeAreaView>
     );
   }

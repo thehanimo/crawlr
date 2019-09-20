@@ -10,6 +10,7 @@ import {
   Dimensions,
   SafeAreaView,
 } from 'react-native';
+import LottieView from 'lottie-react-native';
 import {COLORS} from '../../global/colors';
 import {RegularText, BoldText, MediumText} from '../../Components/Text';
 import {PrimaryButton} from '../../Components/Button';
@@ -53,10 +54,13 @@ export default class Login extends Component {
     super(props);
     this.state = {
       fullName: '',
+      showLoader: false,
+      showDone: false,
     };
   }
 
   confirm = () => {
+    this.setState({showLoader: true});
     const profile = this.props.navigation.getParam('profile', {});
     fetch(API + `/auth/confirm`, {
       method: 'POST',
@@ -69,9 +73,7 @@ export default class Login extends Component {
       .then(response => response.json())
       .then(responseJson => {
         storeData('JWT', responseJson.JWT).then(() => {
-          this.setState({accessToken: ''}, () => {
-            NavigationService.navigate('connect');
-          });
+          this.setState({showDone: true});
         });
       })
       .catch(error => {
@@ -84,74 +86,98 @@ export default class Login extends Component {
     let firstname = profile.fullName.split(' ')[0];
     if (firstname.length > 17) firstname = firstname.slice(0, 16) + '...';
     return (
-      <SafeAreaView
-        style={{
-          backgroundColor: COLORS.BG,
-          flex: 1,
-        }}>
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <View style={{alignItems: 'center'}}>
-            <PrimaryProfileImage>
-              <Image
-                source={{uri: profile.image}}
-                style={{height: 146, width: 146, borderRadius: 146}}
-              />
-            </PrimaryProfileImage>
-            <RegularText
-              size={firstname.length > 14 ? 24 : 32}
-              textAlign="center"
-              addStyle={{marginHorizontal: 16}}
-              numberOfLines={2}>
-              Welcome{' '}
-              <MediumText size={firstname.length > 14 ? 24 : 32}>
-                {firstname}
-                {'! 🎉'}
-              </MediumText>
-            </RegularText>
-          </View>
-
-          <View style={{marginHorizontal: 16, marginTop: 40}}>
-            <RegularText>Confirm your details for us!</RegularText>
-            <View style={{marginTop: 20}}>
-              <MediumText size={16}>Name</MediumText>
-              <PrimaryTextInput
-                defaultValue={profile.fullName}
-                editable={false}
-                style={{marginTop: 15}}
-              />
-            </View>
-            <View style={{marginTop: 34}}>
-              <MediumText size={16}>Email</MediumText>
-              <PrimaryTextInput
-                defaultValue={profile.email}
-                editable={false}
-                style={{marginTop: 15}}
-              />
-            </View>
-          </View>
-          <View style={{height: height / 6}} />
-          <View style={{position: 'absolute', bottom: 0, alignSelf: 'center'}}>
-            <GoButton onPress={this.confirm}>
-              <BoldText size={26} color={'#fff'}>
-                Go
-              </BoldText>
-            </GoButton>
-          </View>
-        </View>
-        {/* <SafeAreaView
+      <React.Fragment>
+        <SafeAreaView
           style={{
+            backgroundColor: COLORS.BG,
             flex: 1,
-            alignItems: 'center',
           }}>
-          <View style={{position: 'absolute', bottom: 0}}>
-            <GoButton>
-              <BoldText size={26} color={'#fff'}>
-                Go
-              </BoldText>
-            </GoButton>
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <View style={{alignItems: 'center'}}>
+              <PrimaryProfileImage>
+                <Image
+                  source={{uri: profile.image}}
+                  style={{height: 146, width: 146, borderRadius: 146}}
+                />
+              </PrimaryProfileImage>
+              <RegularText
+                size={firstname.length > 14 ? 24 : 32}
+                textAlign="center"
+                addStyle={{marginHorizontal: 16}}
+                numberOfLines={2}>
+                Welcome{' '}
+                <MediumText size={firstname.length > 14 ? 24 : 32}>
+                  {firstname}
+                  {'! 🎉'}
+                </MediumText>
+              </RegularText>
+            </View>
+
+            <View style={{marginHorizontal: 16, marginTop: 40}}>
+              <RegularText>Confirm your details for us!</RegularText>
+              <View style={{marginTop: 20}}>
+                <MediumText size={16}>Name</MediumText>
+                <PrimaryTextInput
+                  defaultValue={profile.fullName}
+                  editable={false}
+                  style={{marginTop: 15}}
+                />
+              </View>
+              <View style={{marginTop: 34}}>
+                <MediumText size={16}>Email</MediumText>
+                <PrimaryTextInput
+                  defaultValue={profile.email}
+                  editable={false}
+                  style={{marginTop: 15}}
+                />
+              </View>
+            </View>
+            <View style={{height: height / 6}} />
+            <View
+              style={{position: 'absolute', bottom: 0, alignSelf: 'center'}}>
+              <GoButton onPress={this.confirm}>
+                <BoldText size={26} color={'#fff'}>
+                  Go
+                </BoldText>
+              </GoButton>
+            </View>
           </View>
-        </SafeAreaView> */}
-      </SafeAreaView>
+        </SafeAreaView>
+        {this.state.showLoader && (
+          <View
+            style={{
+              backgroundColor: COLORS.BG + 'BB',
+              height,
+              width,
+              position: 'absolute',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {this.state.showDone ? (
+              <LottieView
+                source={require('../../global/done.json')}
+                autoPlay
+                loop={false}
+                style={{
+                  height: 200,
+                  width: 200,
+                }}
+                onAnimationFinish={() =>
+                  setTimeout(() => {
+                    NavigationService.navigate('connect');
+                  }, 1000)
+                }
+              />
+            ) : (
+              <LottieView
+                source={require('../../global/loader.json')}
+                autoPlay
+                loop
+              />
+            )}
+          </View>
+        )}
+      </React.Fragment>
     );
   }
 }

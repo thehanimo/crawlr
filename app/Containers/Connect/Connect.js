@@ -9,7 +9,10 @@ import {
   Image,
   Dimensions,
   SafeAreaView,
+  Modal,
+  FlatList,
 } from 'react-native';
+import LottieView from 'lottie-react-native';
 import {COLORS} from '../../global/colors';
 import {RegularText, BoldText, MediumText} from '../../Components/Text';
 import {PrimaryButton} from '../../Components/Button';
@@ -58,9 +61,18 @@ export default class Connect extends Component {
 
   componentDidMount() {
     getData('JWT').then(token => {
-      alert(JSON.stringify(token));
+      // alert(JSON.stringify(token));
     });
   }
+
+  renderNewsLoader = () => (
+    <LottieView
+      source={require('../../global/connect.json')}
+      autoPlay
+      loop
+      style={{height: 200, width: 200, alignSelf: 'center'}}
+    />
+  );
 
   render() {
     return (
@@ -70,7 +82,12 @@ export default class Connect extends Component {
           flex: 1,
         }}>
         <Header title="Connect" showPlusButton shadow />
-        <View style={{height: 100, width: 100, backgroundColor: 'red'}}></View>
+        <FlatList
+          data={[]}
+          contentContainerStyle={{flex: 1}}
+          ListEmptyComponent={this.renderNewsLoader}
+          renderItem={this.renderNewsLoader}
+        />
       </SafeAreaView>
     );
   }

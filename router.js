@@ -33,23 +33,9 @@ const RootStack = createSwitchNavigator({
           tabBarLabel: () => null,
           tabBarIcon: ({tintColor}) => {
             if (tintColor === '#000') {
-              return (
-                <IconOutline
-                  name="message"
-                  color={'#fff'}
-                  size={24}
-                  style={{paddingRight: 20}}
-                />
-              );
+              return <IconOutline name="message" color={'#fff'} size={24} />;
             }
-            return (
-              <IconFill
-                name="message"
-                color={tintColor}
-                size={24}
-                style={{paddingRight: 20}}
-              />
-            );
+            return <IconFill name="message" color={tintColor} size={24} />;
           },
         },
       },
@@ -59,23 +45,21 @@ const RootStack = createSwitchNavigator({
           tabBarLabel: () => null,
           tabBarIcon: ({tintColor}) => {
             if (tintColor === '#000') {
-              return (
-                <IconOutline
-                  name="fund"
-                  color={'#fff'}
-                  size={24}
-                  style={{paddingRight: 40}}
-                />
-              );
+              return <IconOutline name="fund" color={'#fff'} size={24} />;
             }
-            return (
-              <IconFill
-                name="fund"
-                color={tintColor}
-                size={24}
-                style={{paddingRight: 40}}
-              />
-            );
+            return <IconFill name="fund" color={tintColor} size={24} />;
+          },
+        },
+      },
+      dummy: {
+        screen: Searches,
+        navigationOptions: {
+          tabBarLabel: () => null,
+          tabBarIcon: ({tintColor}) => {
+            if (tintColor === '#000') {
+              return;
+            }
+            return;
           },
         },
       },
@@ -86,22 +70,10 @@ const RootStack = createSwitchNavigator({
           tabBarIcon: ({tintColor}) => {
             if (tintColor === '#000') {
               return (
-                <IconOutline
-                  name="clock-circle"
-                  color={'#fff'}
-                  size={24}
-                  style={{paddingLeft: 40}}
-                />
+                <IconOutline name="clock-circle" color={'#fff'} size={24} />
               );
             }
-            return (
-              <IconFill
-                name="clock-circle"
-                color={tintColor}
-                size={24}
-                style={{paddingLeft: 40}}
-              />
-            );
+            return <IconFill name="clock-circle" color={tintColor} size={24} />;
           },
         },
       },
@@ -111,23 +83,9 @@ const RootStack = createSwitchNavigator({
           tabBarLabel: () => null,
           tabBarIcon: ({tintColor}) => {
             if (tintColor === '#000') {
-              return (
-                <IconOutline
-                  name="smile"
-                  color={'#fff'}
-                  size={24}
-                  style={{paddingLeft: 20}}
-                />
-              );
+              return <IconOutline name="smile" color={'#fff'} size={24} />;
             }
-            return (
-              <IconFill
-                name="smile"
-                color={tintColor}
-                size={24}
-                style={{paddingLeft: 20}}
-              />
-            );
+            return <IconFill name="smile" color={tintColor} size={24} />;
           },
         },
       },

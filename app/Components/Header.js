@@ -40,14 +40,13 @@ export default class Header extends React.Component {
               borderRadius: 15,
               backgroundColor: '#2ECC71',
               alignItems: 'center',
+              justifyContent: 'center',
               position: 'absolute',
               marginTop: 10,
               right: 16,
             }}
             onPress={this.props.onPlusButtonPress}>
-            <MediumText color="#fff" size={30} addStyle={{marginTop: -6}}>
-              +
-            </MediumText>
+            <IconOutline name="plus" color="#fff" size={20} />
           </TouchableOpacity>
         )}
         {this.props.showX && (
