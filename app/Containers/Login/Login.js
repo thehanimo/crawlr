@@ -11,6 +11,8 @@ import {
   SafeAreaView,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+
 import {COLORS} from '../../global/colors';
 import {RegularText, BoldText, MediumText} from '../../Components/Text';
 import {PrimaryButton} from '../../Components/Button';
@@ -73,7 +75,12 @@ export default class Login extends Component {
       .then(response => response.json())
       .then(responseJson => {
         storeData('JWT', responseJson.JWT).then(() => {
-          this.setState({showDone: true});
+          this.setState({showDone: true}, () => {
+            ReactNativeHapticFeedback.trigger('notificationSuccess', {
+              enableVibrateFallback: true,
+              ignoreAndroidSystemSettings: false,
+            });
+          });
         });
       })
       .catch(error => {
@@ -165,7 +172,7 @@ export default class Login extends Component {
                 onAnimationFinish={() =>
                   setTimeout(() => {
                     NavigationService.navigate('connect');
-                  }, 1000)
+                  }, 1700)
                 }
               />
             ) : (

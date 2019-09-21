@@ -87,6 +87,8 @@ PODS:
     - React
   - RNGestureHandler (1.4.1):
     - React
+  - RNReactNativeHapticFeedback (1.8.2):
+    - React
   - RNReanimated (1.2.0):
     - React
   - RNScreens (2.0.0-alpha.3):
@@ -118,6 +120,7 @@ DEPENDENCIES:
   - React-RCTWebSocket (from `../node_modules/react-native/Libraries/WebSocket`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -175,6 +178,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/async-storage"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNReactNativeHapticFeedback:
+    :path: "../node_modules/react-native-haptic-feedback"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -208,6 +213,7 @@ SPEC CHECKSUMS:
   React-RCTWebSocket: cd932a16b7214898b6b7f788c8bddb3637246ac4
   RNCAsyncStorage: 2e2e3feb9bdadc752a026703d8c4065ca912e75a
   RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
+  RNReactNativeHapticFeedback: e11a4da0ce174e9f88b03cbaf5d76d94633cdee2
   RNReanimated: 1b52415c4302f198cb581282a0166690bad62c43
   RNScreens: 402a99b0a27c0c32f079cec12d3ccbd35e20cd7f
   yoga: 312528f5bbbba37b4dcea5ef00e8b4033fdd9411

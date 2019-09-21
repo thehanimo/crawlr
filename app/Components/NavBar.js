@@ -67,7 +67,7 @@ export default class NavBar extends React.Component {
           }}></BottomTabBar>
         <View
           style={{
-            backgroundColor: COLORS.ACCENT,
+            backgroundColor: 'transparent',
             height: 100,
             width: 70,
             position: 'absolute',
