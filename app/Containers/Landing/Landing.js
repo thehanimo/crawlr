@@ -25,39 +25,46 @@ export default class Landing extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      accessToken: null,
+      accessToken: '',
+      isAuthenticating: false,
     };
   }
   authenticate(accessToken) {
-    fetch(API + `/auth/linkedin/callback/${accessToken}`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        if (responseJson) {
-          this.props.navigation.setParams({accessToken: ''});
-          if (responseJson.JWT) {
-            storeData('JWT', responseJson.JWT).then(() => {
-              this.setState({accessToken: ''}, () => {
-                NavigationService.navigate('connect');
-              });
-            });
-          } else {
-            this.setState({accessToken: ''}, () => {
-              NavigationService.navigate('login', {
-                profile: responseJson,
-              });
-            });
-          }
-        }
+    if (this.state.isAuthenticating) return;
+    this.setState({isAuthenticating: true}, () => {
+      fetch(API + `/auth/linkedin/callback/${accessToken}`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
       })
-      .catch(error => {
-        this.setState({accessToken: ''});
-      });
+        .then(response => response.json())
+        .then(responseJson => {
+          if (responseJson) {
+            this.props.navigation.setParams({accessToken: ''});
+            if (responseJson.JWT) {
+              storeData('JWT', responseJson.JWT).then(() => {
+                this.setState(
+                  {accessToken: '', isAuthenticating: false},
+                  () => {
+                    NavigationService.navigate('connect');
+                  },
+                );
+              });
+            } else {
+              this.setState({accessToken: '', isAuthenticating: false}, () => {
+                NavigationService.navigate('login', {
+                  profile: responseJson,
+                });
+              });
+            }
+          }
+        })
+        .catch(error => {
+          this.setState({accessToken: '', isAuthenticating: false});
+        });
+    });
   }
 
   onLoginPress = () => {
@@ -67,7 +74,7 @@ export default class Landing extends Component {
   };
   render() {
     if (
-      this.props.navigation.getParam('accessToken', null) &&
+      this.props.navigation.getParam('accessToken', '') &&
       !this.state.accessToken
     ) {
       this.setState({
@@ -123,7 +130,7 @@ export default class Landing extends Component {
             </View>
           </SafeAreaView>
         </SafeAreaView>
-        {accessToken !== '' && (
+        {this.state.isAuthenticating && (
           <View
             style={{
               backgroundColor: COLORS.BG + 'BB',
