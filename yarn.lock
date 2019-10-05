@@ -5355,6 +5355,11 @@ react-native-animatable@^1.3.2:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-autogrow-textinput@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-autogrow-textinput/-/react-native-autogrow-textinput-5.2.0.tgz#acf736454781f5beaba8b7d9c943b7333691b65e"
+  integrity sha512-EI15pP6L3fACJGigh3qcILSIn1+SajAe7cABUsVMJv3VWtbufCygpxHmTR4mbmEMnnTMKgAERPQ94X2fqtwF/Q==
+
 react-native-gesture-handler@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.4.1.tgz#c38d9e57637b95e221722a79f2bafac62e3aeb21"
@@ -5364,6 +5369,11 @@ react-native-gesture-handler@^1.4.1:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.4"
     prop-types "^15.7.2"
+
+react-native-global-props@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-native-global-props/-/react-native-global-props-1.1.5.tgz#443e0ffc89d5402fa20ebedf37bcbca6d861c34d"
+  integrity sha512-QDeAdRel6zyJfbgyFxZi9QXZe78OdlANxJae0rJn76uTqdt/A+iWBVjJy3NmaN/fpKy0uV0HhW6Hu4xM0QCisQ==
 
 react-native-haptic-feedback@^1.8.2:
   version "1.8.2"
