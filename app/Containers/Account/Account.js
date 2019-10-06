@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
+import ImagePicker from 'react-native-image-crop-picker';
 
 import {COLORS} from '../../global/colors';
 import {RegularText, BoldText, MediumText} from '../../Components/Text';
@@ -65,8 +66,23 @@ export default class Account extends Component {
       profile: null,
       showEditBio: false,
       isLoading: true,
+      image: '',
     };
   }
+
+  chooseImage = () => {
+    ImagePicker.openPicker({
+      width: 500,
+      height: 500,
+      cropping: true,
+      includeBase64: true,
+      cropperCircleOverlay: true,
+      compressImageMaxHeight: 500,
+      forceJpg: true,
+    }).then(image => {
+      this.onEditImageClose(`data:${image.mime};base64,${image.data}`);
+    });
+  };
 
   logout = () => {
     storeData('JWT', '');
@@ -76,7 +92,7 @@ export default class Account extends Component {
   getProfileImage = () => {
     getData('JWT').then(jwt => {
       if (!jwt) NavigationService.navigate('landing');
-      fetch(API + `/users`, {
+      fetch(API + `/user`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -97,7 +113,7 @@ export default class Account extends Component {
       this.setState({showEditBio: false, isLoading: true}, () => {
         getData('JWT').then(jwt => {
           if (!jwt) NavigationService.navigate('landing');
-          fetch(API + `/users/bio`, {
+          fetch(API + `/user`, {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -111,6 +127,25 @@ export default class Account extends Component {
         });
       });
     }
+  };
+
+  onEditImageClose = newImg => {
+    this.setState({isLoading: true}, () => {
+      getData('JWT').then(jwt => {
+        if (!jwt) NavigationService.navigate('landing');
+        fetch(API + `/user`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: jwt,
+          },
+          body: JSON.stringify({
+            image: newImg,
+          }),
+        }).then(() => this.setState({profile: null}));
+      });
+    });
   };
 
   render() {
@@ -136,6 +171,20 @@ export default class Account extends Component {
                 source={{uri: profile.image}}
                 style={{height: 146, width: 146, borderRadius: 146}}
               />
+              <TouchableOpacity
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  backgroundColor: 'white',
+                  height: 30,
+                  width: 30,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 15,
+                }}
+                onPress={this.chooseImage}>
+                <IconOutline name="edit" />
+              </TouchableOpacity>
             </PrimaryProfileImage>
             <RegularText
               size={26}
