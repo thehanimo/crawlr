@@ -60,6 +60,28 @@ export default class Header extends React.Component {
             <IconOutline name="close" size={24} />
           </TouchableOpacity>
         )}
+        {this.props.showXLeft && (
+          <TouchableOpacity
+            onPress={this.props.onPressXLeft}
+            style={{
+              position: 'absolute',
+              marginTop: 14.5,
+              left: 16,
+            }}>
+            <IconOutline name="close" size={24} />
+          </TouchableOpacity>
+        )}
+        {this.props.showCheck && (
+          <TouchableOpacity
+            onPress={this.props.onPressCheck}
+            style={{
+              position: 'absolute',
+              marginTop: 14.5,
+              right: 16,
+            }}>
+            <IconOutline name="check" size={24} />
+          </TouchableOpacity>
+        )}
       </View>
     );
   }

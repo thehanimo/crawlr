@@ -46,8 +46,10 @@ export default class EditBio extends Component {
       <SafeAreaView style={{flex: 1, backgroundColor: COLORS.BG}}>
         <Header
           title="Write your bio"
-          showX
-          onPressX={() => this.props.onClose(this.state.bio)}
+          showXLeft
+          showCheck
+          onPressXLeft={() => this.props.onClose(this.props.default)}
+          onPressCheck={() => this.props.onClose(this.state.bio)}
         />
         <TouchableOpacity
           style={{

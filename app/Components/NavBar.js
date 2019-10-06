@@ -69,7 +69,7 @@ export default class NavBar extends React.Component {
           style={{
             backgroundColor: 'transparent',
             height: 100,
-            width: 70,
+            width: 105,
             position: 'absolute',
             alignSelf: 'center',
           }}
