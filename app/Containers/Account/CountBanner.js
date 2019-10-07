@@ -20,13 +20,13 @@ export default class CountBanner extends Component {
     return (
       <View
         style={{
-          width: width - 32,
+          width: width,
           marginTop: 16,
           marginBottom: 32,
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
-        <View style={{width: 110}}>
+        <View style={{width: width / 3}}>
           <MediumText
             size={20}
             textAlign="center"
@@ -43,7 +43,7 @@ export default class CountBanner extends Component {
           </RegularText>
         </View>
 
-        <View style={{width: 110}}>
+        <View style={{width: width / 3}}>
           <MediumText
             size={20}
             textAlign="center"
@@ -60,7 +60,7 @@ export default class CountBanner extends Component {
           </RegularText>
         </View>
 
-        <View style={{width: 110}}>
+        <View style={{width: width / 3}}>
           <MediumText
             size={20}
             textAlign="center"

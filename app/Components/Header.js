@@ -1,9 +1,16 @@
 import React from 'react';
-import {View, SafeAreaView, Modal, TouchableOpacity} from 'react-native';
-import {BottomTabBar} from 'react-navigation-tabs';
+import {
+  View,
+  SafeAreaView,
+  Modal,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import {COLORS} from '../global/colors';
 import {IconOutline} from '@ant-design/icons-react-native';
 import {RegularText, BoldText, MediumText} from './Text';
+
+const {height, width} = Dimensions.get('window');
 
 export default class Header extends React.Component {
   constructor(props) {
@@ -11,17 +18,6 @@ export default class Header extends React.Component {
     this.state = {};
   }
   render() {
-    const shadow = this.props.shadow
-      ? {
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 3,
-          },
-          shadowOpacity: 0.1,
-          shadowRadius: 1.65,
-        }
-      : {};
     return (
       <View
         style={{
@@ -29,7 +25,6 @@ export default class Header extends React.Component {
           paddingBottom: 25,
           backgroundColor: COLORS.BG,
           zIndex: 2,
-          ...shadow,
         }}>
         <MediumText textAlign="center">{this.props.title}</MediumText>
         {this.props.showPlusButton && (
