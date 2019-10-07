@@ -158,7 +158,13 @@ export default class Account extends Component {
           backgroundColor: COLORS.BG,
           flex: 1,
         }}>
-        <Header title="My Account" />
+        <Header
+          title="My Account"
+          showRefresh
+          onPressRefresh={() =>
+            this.setState({isLoading: true}, this.getProfileImage)
+          }
+        />
         {!isLoading ? (
           <View
             style={{

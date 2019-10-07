@@ -130,7 +130,7 @@ export default class Question extends Component {
     getData('UserID').then(uid => this.setState({UserID: uid}));
   }
 
-  fetchDataNextPage = (initial, untilCurrentPage) => {
+  fetchDataNextPage = (initial, untilCurrentPage, isDelete) => {
     const item = this.props.navigation.getParam('item', {});
     if (untilCurrentPage) var untilPage = this.page;
     if (initial) {
@@ -155,7 +155,7 @@ export default class Question extends Component {
       )
         .then(response => response.json())
         .then(responseData => {
-          if (responseData.data.length !== 0) {
+          if (responseData.data.length !== 0 || isDelete) {
             this.page += 1;
             var data = this.state.data;
             var newData;
@@ -180,7 +180,7 @@ export default class Question extends Component {
   };
 
   postReply = () => {
-    this.setState({data: []});
+    this.setState({data: [], checkedOnce: false});
     this.textInput.clear();
     this.textInput.blur();
     const item = this.props.navigation.getParam('item', {});
@@ -357,7 +357,7 @@ export default class Question extends Component {
       Y = this.state.actionY;
 
     if (Y > height / 2) {
-      Y = Y - 56;
+      Y = Y - 86;
       bottom = false;
     } else {
       Y = Y + 24;
@@ -366,6 +366,8 @@ export default class Question extends Component {
 
     if (X < 16) X = 16;
     else if (X > width - 116) X = width - 116;
+
+    const question = this.props.navigation.getParam('item', {});
     return (
       <React.Fragment>
         {this.state.isVerifyingReply ? (
@@ -383,17 +385,46 @@ export default class Question extends Component {
               borderRadius: 8,
               top: Y,
               left: X,
-              padding: 8,
+              paddingVertical: 4,
             }}>
+            {this.state.UserID === question.askerID && (
+              <React.Fragment>
+                <TouchableOpacity
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    paddingVertical: 4,
+                    paddingHorizontal: 8,
+                  }}
+                  onPress={this.verifyReply}>
+                  <IconOutline name="check-circle" size={16} />
+                  <View style={{flex: 1}}>
+                    <MediumText size={14} textAlign="center">
+                      Verify
+                    </MediumText>
+                  </View>
+                </TouchableOpacity>
+                <View
+                  style={{height: 1, flex: 1, backgroundColor: '#000000BB'}}
+                />
+              </React.Fragment>
+            )}
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'center',
+                justifyContent: 'space-between',
+                paddingVertical: 4,
+                paddingHorizontal: 8,
               }}
-              onPress={this.verifyReply}>
-              <IconOutline name="check-circle" size={16} />
-              <MediumText size={14}> Verify</MediumText>
+              onPress={this.deleteReply}>
+              <Icon name="trash-2" size={16} color="#E74C3C" />
+              <View style={{flex: 1}}>
+                <MediumText size={14} textAlign="center" color="#E74C3C">
+                  Delete
+                </MediumText>
+              </View>
             </TouchableOpacity>
             <View
               style={[
@@ -443,6 +474,38 @@ export default class Question extends Component {
         .catch(() => NavigationService.navigate('landing'));
     });
   };
+
+  deleteReply = () => {
+    this.setState({isVerifyingReply: true});
+    const item = this.props.navigation.getParam('item', {});
+    getData('JWT').then(jwt => {
+      if (!jwt) NavigationService.navigate('landing');
+      fetch(API + `/reply/delete`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: jwt,
+        },
+        body: JSON.stringify({
+          ReplyID: this.state.actionableReplyID,
+          QuestionID: item.id,
+        }),
+      })
+        .then(() => {
+          this.setState({
+            isVerifyingReply: false,
+            showActionModal: false,
+            actionY: 0,
+            actionX: 0,
+            actionableReplyID: null,
+          });
+          this.fetchDataNextPage(true, true, true);
+        })
+        .catch(() => NavigationService.navigate('landing'));
+    });
+  };
+
   render() {
     const item = this.props.navigation.getParam('item', {});
     if (!item.replies) replies = 'No replies yet';

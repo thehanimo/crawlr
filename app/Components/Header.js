@@ -92,6 +92,17 @@ export default class Header extends React.Component {
             <Icon name="check" size={24} color="#000" />
           </TouchableOpacity>
         )}
+        {this.props.showRefresh && (
+          <TouchableOpacity
+            onPress={this.props.onPressRefresh}
+            style={{
+              position: 'absolute',
+              marginTop: 14.5,
+              right: 16,
+            }}>
+            <Icon name="rotate-cw" size={24} color="#000" />
+          </TouchableOpacity>
+        )}
       </View>
     );
   }
