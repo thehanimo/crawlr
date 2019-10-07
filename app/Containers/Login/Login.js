@@ -75,12 +75,17 @@ export default class Login extends Component {
       .then(response => response.json())
       .then(responseJson => {
         storeData('JWT', responseJson.JWT).then(() => {
-          this.setState({showDone: true}, () => {
-            ReactNativeHapticFeedback.trigger('notificationSuccess', {
-              enableVibrateFallback: true,
-              ignoreAndroidSystemSettings: false,
-            });
-          });
+          storeData(
+            'UserID',
+            responseJson.UserID.then(() =>
+              this.setState({showDone: true}, () => {
+                ReactNativeHapticFeedback.trigger('notificationSuccess', {
+                  enableVibrateFallback: true,
+                  ignoreAndroidSystemSettings: false,
+                });
+              }),
+            ),
+          );
         });
       })
       .catch(error => {

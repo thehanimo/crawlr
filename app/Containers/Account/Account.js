@@ -86,6 +86,7 @@ export default class Account extends Component {
 
   logout = () => {
     storeData('JWT', '');
+    storeData('UserID', '');
     NavigationService.navigate('landing');
   };
 

@@ -111,6 +111,7 @@ export default class Question extends Component {
       data: [],
       fetching: false,
       refreshing: false,
+      checkedOnce: false,
       reply: '',
       scrollY: new Animated.Value(0),
       showActionModal: false,
@@ -125,22 +126,33 @@ export default class Question extends Component {
   componentDidMount() {
     this.fetchDataNextPage(true);
   }
+  componentWillMount() {
+    getData('UserID').then(uid => this.setState({UserID: uid}));
+  }
 
-  fetchDataNextPage = initial => {
+  fetchDataNextPage = (initial, untilCurrentPage) => {
     const item = this.props.navigation.getParam('item', {});
+    if (untilCurrentPage) var untilPage = this.page;
     if (initial) {
-      this.page = 1;
+      if (untilCurrentPage) {
+        var untilPage = this.page;
+        this.page -= 1;
+      } else this.page = 1;
     }
     getData('JWT').then(jwt => {
       if (!jwt) NavigationService.navigate('landing');
-      fetch(API + `/reply?pageNo=${this.page}&questionID=${item.id}`, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: jwt,
+      fetch(
+        API +
+          `/reply?pageNo=${this.page}&questionID=${item.id}&untilPage=${untilPage}`,
+        {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: jwt,
+          },
         },
-      })
+      )
         .then(response => response.json())
         .then(responseData => {
           if (responseData.data.length !== 0) {
@@ -149,9 +161,18 @@ export default class Question extends Component {
             var newData;
             if (initial) newData = responseData.data;
             else newData = data.concat(responseData.data);
-            this.setState({data: newData, fetching: false, refreshing: false});
+            this.setState({
+              data: newData,
+              fetching: false,
+              refreshing: false,
+              checkedOnce: true,
+            });
           } else {
-            this.setState({fetching: false, refreshing: false});
+            this.setState({
+              fetching: false,
+              refreshing: false,
+              checkedOnce: true,
+            });
           }
         })
         .catch(() => NavigationService.navigate('landing'));
@@ -159,6 +180,7 @@ export default class Question extends Component {
   };
 
   postReply = () => {
+    this.setState({data: []});
     this.textInput.clear();
     this.textInput.blur();
     const item = this.props.navigation.getParam('item', {});
@@ -183,7 +205,6 @@ export default class Question extends Component {
           this.setState({
             reply: '',
             refreshing: true,
-            data: [],
           });
           this.fetchDataNextPage(true);
         })
@@ -244,6 +265,7 @@ export default class Question extends Component {
           onSubmitEditing={() => {}}
           onBlur={() => {}}
           placeholder={'Your reply...'}
+          allowFontScaling={false}
         />
         <ReplyButton
           style={{
@@ -263,6 +285,13 @@ export default class Question extends Component {
   };
 
   handlePress = (evt, item) => {
+    if (this.state.UserID !== item.UserID) {
+      ReactNativeHapticFeedback.trigger('notificationError', {
+        enableVibrateFallback: true,
+        ignoreAndroidSystemSettings: false,
+      });
+      return;
+    }
     this.setState({
       showActionModal: true,
       actionY: evt.nativeEvent.pageY,
@@ -278,7 +307,7 @@ export default class Question extends Component {
   renderReply = ({item, index}) => (
     <React.Fragment>
       <TouchableOpacity
-        activeOpacity={1}
+        activeOpacity={0.7}
         style={replyStyle}
         onLongPress={evt => this.handlePress(evt, item)}>
         <MediumText size={14}>{item.reply}</MediumText>
@@ -408,9 +437,8 @@ export default class Question extends Component {
             actionY: 0,
             actionX: 0,
             actionableReplyID: null,
-            refreshing: true,
           });
-          this.fetchDataNextPage(true);
+          this.fetchDataNextPage(true, true);
         })
         .catch(() => NavigationService.navigate('landing'));
     });
@@ -483,12 +511,28 @@ export default class Question extends Component {
             {nativeEvent: {contentOffset: {y: this.state.scrollY}}},
           ])}
           ListEmptyComponent={
-            <LottieView
-              source={require('../../global/loader.json')}
-              autoPlay
-              loop
-              style={{height: 200, width: 200, alignSelf: 'center'}}
-            />
+            !this.state.checkedOnce ? (
+              <LottieView
+                source={require('../../global/loader.json')}
+                autoPlay
+                loop
+                style={{height: 200, width: 200, alignSelf: 'center'}}
+              />
+            ) : (
+              <View>
+                <LottieView
+                  source={require('../../global/lonely-whale.json')}
+                  autoPlay
+                  loop
+                  style={{height: 200, width: 200, alignSelf: 'center'}}
+                />
+                <View style={{marginTop: -40}}>
+                  <MediumText size={14} textAlign="center">
+                    It's so lonely here <MediumText size={26}>💭</MediumText>
+                  </MediumText>
+                </View>
+              </View>
+            )
           }
         />
         <Modal
