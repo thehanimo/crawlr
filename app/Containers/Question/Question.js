@@ -204,7 +204,6 @@ export default class Question extends Component {
         .then(() => {
           this.setState({
             reply: '',
-            refreshing: true,
           });
           this.fetchDataNextPage(true);
         })
