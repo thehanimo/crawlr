@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import {COLORS} from '../global/colors';
 import {IconOutline} from '@ant-design/icons-react-native';
+import Icon from 'react-native-vector-icons/Feather';
 import {RegularText, BoldText, MediumText} from './Text';
 
 const {height, width} = Dimensions.get('window');
@@ -49,10 +50,11 @@ export default class Header extends React.Component {
             onPress={this.props.onPressX}
             style={{
               position: 'absolute',
+              top: -2,
               marginTop: 14.5,
               right: 16,
             }}>
-            <IconOutline name="close" size={24} />
+            <Icon name="x" size={24} color="#000" />
           </TouchableOpacity>
         )}
         {this.props.showXLeft && (
@@ -60,10 +62,23 @@ export default class Header extends React.Component {
             onPress={this.props.onPressXLeft}
             style={{
               position: 'absolute',
+              top: -2,
               marginTop: 14.5,
               left: 16,
             }}>
-            <IconOutline name="close" size={24} />
+            <Icon name="x" size={24} color="#000" />
+          </TouchableOpacity>
+        )}
+        {this.props.showBack && (
+          <TouchableOpacity
+            onPress={this.props.onPressBack}
+            style={{
+              position: 'absolute',
+              top: -2,
+              marginTop: 14.5,
+              left: 16,
+            }}>
+            <Icon name="arrow-left" size={24} color="#000" />
           </TouchableOpacity>
         )}
         {this.props.showCheck && (
@@ -74,7 +89,7 @@ export default class Header extends React.Component {
               marginTop: 14.5,
               right: 16,
             }}>
-            <IconOutline name="check" size={24} />
+            <Icon name="check" size={24} color="#000" />
           </TouchableOpacity>
         )}
       </View>

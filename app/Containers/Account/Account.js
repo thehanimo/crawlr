@@ -216,7 +216,7 @@ export default class Account extends Component {
               questions={profile.questions}
               replies={profile.replies}
             />
-            <View style={{position: 'absolute', bottom: 0, right: width / 20}}>
+            <View style={{position: 'absolute', bottom: 0, right: width / 30}}>
               <LogoutButton
                 onPress={this.logout}
                 style={{
@@ -233,7 +233,7 @@ export default class Account extends Component {
               </LogoutButton>
             </View>
 
-            <View style={{position: 'absolute', bottom: 0, left: width / 20}}>
+            <View style={{position: 'absolute', bottom: 0, left: width / 30}}>
               <GetPremiumButton
                 style={{
                   alignSelf: 'flex-end',

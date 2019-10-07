@@ -112,11 +112,15 @@ export default class Connect extends Component {
 
   renderQuestion = ({item, index}) => {
     let firstname = item.fullName.split(' ')[0];
-    if (item.replies === 1) replies = 'No replies yet';
-    else if (!item.replies) replies = '1 reply';
+    if (!item.replies) replies = 'No replies yet';
+    else if (item.replies === 1) replies = '1 reply';
     else replies = `${item.replies} replies`;
     return (
-      <TouchableOpacity style={{marginVertical: 10}}>
+      <TouchableOpacity
+        style={{marginVertical: 10}}
+        onPress={() => {
+          this.props.navigation.push('question', {item});
+        }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <SecondaryProfileImage>
             <Image
@@ -135,6 +139,7 @@ export default class Connect extends Component {
             flexDirection: 'row',
             justifyContent: 'flex-end',
             marginRight: 20,
+            marginTop: 4,
           }}>
           <RegularText size={10}>{replies}</RegularText>
           <View
@@ -197,7 +202,7 @@ export default class Connect extends Component {
           }}
           onEndReachedThreshold={0.4}
           onEndReached={() => {
-            this.setState({fetching: false});
+            this.setState({fetching: true});
             this.fetchDataNextPage();
           }}
           style={{
