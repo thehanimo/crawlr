@@ -12,6 +12,7 @@ import {
   Modal,
   FlatList,
   ActivityIndicator,
+  Animated,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 import {COLORS} from '../../global/colors';
@@ -41,7 +42,7 @@ export default class Connect extends Component {
       fetching: false,
       refreshing: false,
       showAddQuestion: false,
-      scrollY: 0,
+      scrollY: new Animated.Value(0),
     };
     this.page = 1;
   }
@@ -149,6 +150,21 @@ export default class Connect extends Component {
   };
 
   render() {
+    const shadowRadius = this.state.scrollY.interpolate({
+      inputRange: [0, 50],
+      outputRange: [0, 5],
+      extrapolate: 'clamp',
+    });
+    const shadowOpacity = this.state.scrollY.interpolate({
+      inputRange: [0, 50],
+      outputRange: [0, 0.15],
+      extrapolate: 'clamp',
+    });
+    const shadowHeight = this.state.scrollY.interpolate({
+      inputRange: [0, 50],
+      outputRange: [0, 2.5],
+      extrapolate: 'clamp',
+    });
     return (
       <SafeAreaView
         style={{
@@ -159,6 +175,18 @@ export default class Connect extends Component {
           title="Connect"
           showPlusButton
           onPlusButtonPress={() => this.setState({showAddQuestion: true})}
+        />
+        <Animated.View
+          style={{
+            height: 10,
+            width,
+            backgroundColor: COLORS.BG,
+            marginTop: -10,
+            shadowColor: '#000',
+            shadowOffset: {width: 0, height: shadowHeight},
+            shadowOpacity,
+            shadowRadius,
+          }}
         />
         <FlatList
           data={this.state.data}
@@ -180,6 +208,9 @@ export default class Connect extends Component {
           ListEmptyComponent={this.renderNewsLoader}
           ListFooterComponent={this.renderFooter}
           renderItem={this.renderQuestion}
+          onScroll={Animated.event([
+            {nativeEvent: {contentOffset: {y: this.state.scrollY}}},
+          ])}
         />
         <Modal
           transparent
