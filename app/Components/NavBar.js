@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {BottomTabBar} from 'react-navigation-tabs';
 import styled from 'styled-components';
+import LottieView from 'lottie-react-native';
 
 import {COLORS} from '../global/colors';
 import {IconOutline} from '@ant-design/icons-react-native';
@@ -105,14 +106,24 @@ export default class NavBar extends React.Component {
               showX
               onPressX={() => this.setState({isSearchOpen: false})}
             />
-            <Image
-              source={require('crawlr/assets/images/bg.png')}
+            <LottieView
+              source={require('../global/waves.json')}
               style={{
-                height,
+                height: width * 1.5,
                 width,
-                backgroundColor: COLORS.BG,
                 position: 'absolute',
-                bottom: -50,
+                bottom: 20,
+              }}
+              autoPlay
+              loop
+            />
+            <View
+              style={{
+                backgroundColor: '#0277B2',
+                width,
+                height: width * 0.3,
+                position: 'absolute',
+                bottom: 0,
               }}
             />
             <View style={{marginHorizontal: 16, alignItems: 'center'}}>
