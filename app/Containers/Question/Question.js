@@ -37,6 +37,7 @@ const SecondaryProfileImage = styled.View`
   width: 24px;
   border-radius: 12px;
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.16);
+  elevation: 8;
 `;
 
 const SmallProfileImage = styled.View`
@@ -44,6 +45,7 @@ const SmallProfileImage = styled.View`
   width: 20px;
   border-radius: 10px;
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.16);
+  elevation: 5;
 `;
 
 const CheckIcon = styled.View`
@@ -55,6 +57,7 @@ const CheckIcon = styled.View`
   position: absolute;
   top: -3px;
   left: -3px;
+  elevation: 15;
 `;
 
 const ReplyButton = styled.TouchableOpacity`
@@ -66,6 +69,7 @@ const ReplyButton = styled.TouchableOpacity`
   padding-horizontal: 16px;
   flex-direction: row;
   align-items: center;
+  elevation: 10;
 `;
 
 const textStyle = {
@@ -87,6 +91,7 @@ const textStyle = {
   shadowRadius: 6,
   marginHorizontal: 16,
   marginTop: 20,
+  elevation: 5,
 };
 
 const replyStyle = {
@@ -102,6 +107,7 @@ const replyStyle = {
   shadowRadius: 6,
   marginHorizontal: 16,
   marginTop: 20,
+  elevation: 5,
 };
 
 export default class Question extends Component {

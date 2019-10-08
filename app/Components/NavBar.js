@@ -29,17 +29,19 @@ const SearchBar = styled.TextInput`
   background-color: #fff;
   font-family: Quicksand-Regular;
   padding-horizontal: 16px;
+  elevation: 10;
 `;
 
 const SearchButton = styled.TouchableOpacity`
   height: 34px;
   width: 128px;
   border-radius: 34px;
-  box-shadow: 0px 3px 5px #ff7e674d;
+  box-shadow: 0px 3px 5px #0000004d;
   background-color: #ff7e67;
   padding-horizontal: 16px;
   flex-direction: row;
   align-items: center;
+  elevation: 15;
 `;
 
 export default class NavBar extends React.Component {
@@ -57,14 +59,14 @@ export default class NavBar extends React.Component {
           style={{
             backgroundColor: COLORS.ACCENT,
             borderTopColor: 'transparent',
-            shadowColor: COLORS.ACCENT,
+            shadowColor: '#000',
             shadowOffset: {
               width: 0,
               height: -3,
             },
             shadowOpacity: 0.3,
             shadowRadius: 4.65,
-            elevation: 8,
+            elevation: 15,
           }}></BottomTabBar>
         <View
           style={{
@@ -85,14 +87,14 @@ export default class NavBar extends React.Component {
             top: -31,
             alignSelf: 'center',
             position: 'absolute',
-            shadowColor: '#FF7E67',
+            shadowColor: '#000',
             shadowOffset: {
               width: 0,
-              height: -3,
+              height: 3,
             },
             shadowOpacity: 0.3,
             shadowRadius: 4.65,
-            elevation: 8,
+            elevation: 20,
             alignItems: 'center',
             justifyContent: 'center',
           }}>
@@ -121,7 +123,7 @@ export default class NavBar extends React.Component {
               style={{
                 backgroundColor: '#0277B2',
                 width,
-                height: width * 0.3,
+                height: width * 0.4,
                 position: 'absolute',
                 bottom: 0,
               }}

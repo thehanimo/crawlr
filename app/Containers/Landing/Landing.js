@@ -101,7 +101,7 @@ export default class Landing extends Component {
             style={{
               backgroundColor: '#0277B2',
               width,
-              height: width * 0.3,
+              height: width * 0.4,
               position: 'absolute',
               bottom: 0,
             }}

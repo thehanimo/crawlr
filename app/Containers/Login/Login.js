@@ -34,6 +34,7 @@ const PrimaryProfileImage = styled.View`
   border-radius: 146px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
   margin-bottom: 26px;
+  elevation: 15;
 `;
 
 const PrimaryTextInput = styled.TextInput`
@@ -44,16 +45,18 @@ const PrimaryTextInput = styled.TextInput`
   background-color: #fff;
   font-family: Quicksand-Regular;
   padding-horizontal: 16px;
+  elevation: 5;
 `;
 
 export const GoButton = styled.TouchableOpacity`
   height: 62px;
   width: 62px;
   border-radius: 62px;
-  box-shadow: 0px 3px 10px #5ccbed4d;
+  box-shadow: 0px 3px 6px #0000004d;
   background-color: #5ccbed;
   justify-content: center;
   align-items: center;
+  elevation: 10;
 `;
 
 export default class Login extends Component {
@@ -155,6 +158,7 @@ export default class Login extends Component {
                       justifyContent: 'center',
                       alignItems: 'center',
                       borderRadius: 15,
+                      elevation: 10,
                     }}
                     onPress={this.chooseImage}>
                     <IconOutline name="edit" />

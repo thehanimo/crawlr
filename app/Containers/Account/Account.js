@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 import ImagePicker from 'react-native-image-crop-picker';
+import RazorpayCheckout from 'react-native-razorpay';
 
 import {COLORS} from '../../global/colors';
 import {RegularText, BoldText, MediumText} from '../../Components/Text';
@@ -35,28 +36,31 @@ const PrimaryProfileImage = styled.View`
   border-radius: 146px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
   margin-bottom: 26px;
+  elevation: 15;
 `;
 
 const GetPremiumButton = styled.TouchableOpacity`
   height: 34px;
   width: 128px;
   border-radius: 34px;
-  box-shadow: 0px 3px 5px #fbc02d4d;
+  box-shadow: 0px 0px 10px #0000004d;
   background-color: #fbc02d;
   padding-horizontal: 16px;
   flex-direction: row;
   align-items: center;
+  elevation: 5;
 `;
 
 const LogoutButton = styled.TouchableOpacity`
   height: 34px;
   width: 128px;
   border-radius: 34px;
-  box-shadow: 0px 3px 5px #e74c3c4d;
+  box-shadow: 0px 0px 10px #0000004d;
   background-color: #e74c3c;
   padding-horizontal: 16px;
   flex-direction: row;
   align-items: center;
+  elevation: 5;
 `;
 
 export default class Account extends Component {
@@ -130,6 +134,25 @@ export default class Account extends Component {
     }
   };
 
+  onGetPremium = paymentID => {
+    this.setState({isLoading: true}, () => {
+      getData('JWT').then(jwt => {
+        if (!jwt) NavigationService.navigate('landing');
+        fetch(API + `/user`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: jwt,
+          },
+          body: JSON.stringify({
+            paymentID,
+          }),
+        }).then(() => this.setState({profile: null}));
+      });
+    });
+  };
+
   onEditImageClose = newImg => {
     this.setState({isLoading: true}, () => {
       getData('JWT').then(jwt => {
@@ -188,6 +211,7 @@ export default class Account extends Component {
                   justifyContent: 'center',
                   alignItems: 'center',
                   borderRadius: 15,
+                  elevation: 10,
                 }}
                 onPress={this.chooseImage}>
                 <IconOutline name="edit" />
@@ -241,19 +265,50 @@ export default class Account extends Component {
             </View>
 
             <View style={{position: 'absolute', bottom: 0, left: width / 30}}>
-              <GetPremiumButton
-                style={{
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginTop: 20,
-                }}>
-                <IconOutline name="star" color={'#000'} size={18} />
-                <View style={{width: 2}} />
-                <RegularText color="#000" size={14}>
-                  Get Premium
-                </RegularText>
-              </GetPremiumButton>
+              {profile.isPremiumUser ? (
+                <View style={{width: 128, height: 34}} />
+              ) : (
+                <GetPremiumButton
+                  style={{
+                    alignSelf: 'flex-end',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: 20,
+                  }}
+                  onPress={() => {
+                    var options = {
+                      description: 'Premium User Subscription',
+                      image: 'https://crawlr-api.herokuapp.com/logo.jpg',
+                      currency: 'INR',
+                      key: 'rzp_test_1DP5mmOlF5G5ag',
+                      amount: '50000',
+                      name: 'crawlr Inc.',
+                      prefill: {
+                        email: profile.email,
+                        contact: '',
+                        name: profile.fullName,
+                      },
+                      theme: {color: COLORS.PRIMARY},
+                    };
+                    RazorpayCheckout.open(options)
+                      .then(data => {
+                        this.onGetPremium(data.razorpay_payment_id);
+                      })
+                      .catch(error => {
+                        if (error.code && error.code === 2) {
+                          alert(`We didn't receive your payment. 🙁`);
+                        } else {
+                          alert(`Oops! Something went wrong.. 🤔`);
+                        }
+                      });
+                  }}>
+                  <IconOutline name="star" color={'#000'} size={18} />
+                  <View style={{width: 2}} />
+                  <RegularText color="#000" size={14}>
+                    Get Premium
+                  </RegularText>
+                </GetPremiumButton>
+              )}
             </View>
             <Modal
               transparent

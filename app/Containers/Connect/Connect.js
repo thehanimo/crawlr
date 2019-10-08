@@ -29,14 +29,15 @@ import {getData} from '../../global/localStorage';
 import AddQuestion from './AddQuestion';
 import {IconOutline} from '@ant-design/icons-react-native';
 import Triangle from 'react-native-triangle';
+import NavigationService from '../../../NavigationService';
 
 const {height, width} = Dimensions.get('window');
-
 const SecondaryProfileImage = styled.View`
   height: 24px;
   width: 24px;
   border-radius: 12px;
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.16);
+  elevation: 5;
 `;
 
 export default class Connect extends Component {
@@ -79,7 +80,10 @@ export default class Connect extends Component {
       } else this.page = 1;
     }
     getData('JWT').then(jwt => {
-      if (!jwt) NavigationService.navigate('landing');
+      if (!jwt) {
+        NavigationService.navigate('landing');
+        return;
+      }
       fetch(
         API +
           `/question/all?pageNo=${
@@ -96,7 +100,7 @@ export default class Connect extends Component {
       )
         .then(response => response.json())
         .then(responseData => {
-          if (responseData.data.length !== 0) {
+          if (responseData.data && responseData.data.length !== 0) {
             this.page += 1;
             var data = this.state.data;
             var newData;
@@ -116,7 +120,7 @@ export default class Connect extends Component {
             });
           }
         })
-        .catch(() => NavigationService.navigate('landing'));
+        .catch(err => alert(err));
     });
   };
 
@@ -174,7 +178,7 @@ export default class Connect extends Component {
     return (
       <TouchableOpacity
         activeOpacity={0.7}
-        style={{marginTop: 10, marginBottom: 30}}
+        style={{marginTop: 10, marginBottom: 30, paddingHorizontal: 16}}
         onPress={() => {
           this.props.navigation.push('question', {item});
         }}
@@ -422,7 +426,6 @@ export default class Connect extends Component {
           }}
           style={{
             flex: 1,
-            paddingHorizontal: 16,
             paddingTop: 20,
           }}
           ListEmptyComponent={this.renderNewsLoader}

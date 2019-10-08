@@ -40,6 +40,14 @@ export default class Header extends React.Component {
               position: 'absolute',
               marginTop: 10,
               right: 16,
+              elevation: 5,
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 0,
+              },
+              shadowOpacity: 0.3,
+              shadowRadius: 2.65,
             }}
             onPress={this.props.onPlusButtonPress}>
             <IconOutline name="plus" color="#fff" size={20} />
