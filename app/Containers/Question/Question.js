@@ -238,7 +238,7 @@ export default class Question extends Component {
         <View
           style={{
             width: width - 32,
-            height: 0.2,
+            height: 0.25,
             backgroundColor: '#8E8E8E',
             marginHorizontal: 16,
             marginTop: 20,
