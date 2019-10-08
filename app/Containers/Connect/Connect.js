@@ -13,8 +13,12 @@ import {
   FlatList,
   ActivityIndicator,
   Animated,
+  TouchableOpacity,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
+import Icon from 'react-native-vector-icons/Feather';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+
 import {COLORS} from '../../global/colors';
 import {RegularText, BoldText, MediumText} from '../../Components/Text';
 import {PrimaryButton} from '../../Components/Button';
@@ -23,7 +27,8 @@ import {API, getTimeSince} from '../../global/constants';
 import Header from '../../Components/Header';
 import {getData} from '../../global/localStorage';
 import AddQuestion from './AddQuestion';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {IconOutline} from '@ant-design/icons-react-native';
+import Triangle from 'react-native-triangle';
 
 const {height, width} = Dimensions.get('window');
 
@@ -42,59 +47,110 @@ export default class Connect extends Component {
       fetching: false,
       refreshing: false,
       showAddQuestion: false,
+      checkedOnce: false,
       scrollY: new Animated.Value(0),
+      showActionModal: false,
+      actionY: 0,
+      actionableQuestion: null,
+      actionableQuestionIndex: null,
+      isDeletingQuestion: false,
     };
     this.page = 1;
   }
-
-  componentDidMount() {
-    this.fetchDataNextPage(true);
+  componentWillUnmount() {
+    this._sub.remove();
   }
 
-  fetchDataNextPage = initial => {
+  componentDidMount() {
+    this._sub = this.props.navigation.addListener('didFocus', () => {
+      this.fetchDataNextPage(true, true);
+    });
+  }
+  componentWillMount() {
+    getData('UserID').then(uid => this.setState({UserID: uid}));
+  }
+
+  fetchDataNextPage = (initial, untilCurrentPage) => {
+    if (untilCurrentPage) var untilPage = this.page;
     if (initial) {
-      this.page = 1;
+      if (untilCurrentPage) {
+        var untilPage = this.page;
+        this.page -= 1;
+      } else this.page = 1;
     }
     getData('JWT').then(jwt => {
       if (!jwt) NavigationService.navigate('landing');
-      fetch(API + `/question/all?pageNo=${this.page}`, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: jwt,
+      fetch(
+        API +
+          `/question/all?pageNo=${
+            untilPage ? this.page + 1 : this.page
+          }&untilPage=${untilPage || null}`,
+        {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: jwt,
+          },
         },
-      })
+      )
         .then(response => response.json())
         .then(responseData => {
           if (responseData.data.length !== 0) {
             this.page += 1;
             var data = this.state.data;
             var newData;
-            if (initial) newData = responseData.data;
+            if (initial || this.page === 2) newData = responseData.data;
             else newData = data.concat(responseData.data);
-            this.setState({data: newData, fetching: false, refreshing: false});
+            this.setState({
+              data: newData,
+              fetching: false,
+              refreshing: false,
+              checkedOnce: true,
+            });
           } else {
-            this.setState({fetching: false, refreshing: false});
+            this.setState({
+              fetching: false,
+              refreshing: false,
+              checkedOnce: true,
+            });
           }
         })
         .catch(() => NavigationService.navigate('landing'));
     });
   };
 
-  renderNewsLoader = () => (
-    <LottieView
-      source={require('../../global/connect.json')}
-      autoPlay
-      loop
-      style={{height: 200, width: 200, alignSelf: 'center'}}
-    />
-  );
+  renderNewsLoader = () =>
+    !this.state.checkedOnce ? (
+      <LottieView
+        source={require('../../global/connect.json')}
+        autoPlay
+        loop
+        style={{height: 200, width: 200, alignSelf: 'center'}}
+      />
+    ) : (
+      <View>
+        <LottieView
+          source={require('../../global/lonely-whale.json')}
+          autoPlay
+          loop
+          style={{height: 200, width: 200, alignSelf: 'center'}}
+        />
+        <View style={{marginTop: -40}}>
+          <MediumText size={14} textAlign="center">
+            It's so lonely here <MediumText size={26}>💭</MediumText>
+          </MediumText>
+        </View>
+      </View>
+    );
 
   onAddQuestion = () => {
-    this.setState({data: [], showAddQuestion: false}, () => {
-      this.fetchDataNextPage(true);
-    });
+    this.setState(
+      {data: [], showAddQuestion: false, checkedOnce: false},
+      () => {
+        this.fetchDataNextPage(true);
+      },
+    );
   };
 
   onAddQuestionCancel = () => {
@@ -117,10 +173,12 @@ export default class Connect extends Component {
     else replies = `${item.replies} replies`;
     return (
       <TouchableOpacity
-        style={{marginVertical: 10}}
+        activeOpacity={0.7}
+        style={{marginTop: 10, marginBottom: 30}}
         onPress={() => {
           this.props.navigation.push('question', {item});
-        }}>
+        }}
+        onLongPress={evt => this.handlePress(evt, item, index)}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <SecondaryProfileImage>
             <Image
@@ -132,6 +190,20 @@ export default class Connect extends Component {
             {firstname}
             <RegularText size={12}> asks</RegularText>
           </MediumText>
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+            }}>
+            <TouchableOpacity
+              onPress={evt =>
+                this.handlePress(evt, item, index, (isLight = true))
+              }
+              style={{backgroundColor: 'transparent'}}>
+              <Icon name="more-horizontal" size={18} />
+            </TouchableOpacity>
+          </View>
         </View>
         <MediumText addStyle={{marginLeft: 20}}>{item.question}</MediumText>
         <View
@@ -152,6 +224,149 @@ export default class Connect extends Component {
         </View>
       </TouchableOpacity>
     );
+  };
+
+  handlePress = (evt, item, index, isLight) => {
+    this.setState({
+      showActionModal: true,
+      actionY: evt.nativeEvent.pageY,
+      actionableQuestion: item,
+      actionableQuestionIndex: index,
+    });
+    ReactNativeHapticFeedback.trigger(isLight ? 'impactLight' : 'impactHeavy', {
+      enableVibrateFallback: true,
+      ignoreAndroidSystemSettings: false,
+    });
+  };
+
+  renderActions = () => {
+    var X = width - 108,
+      Y = this.state.actionY;
+
+    if (Y > height / 2) {
+      Y = Y - 86;
+      bottom = false;
+    } else {
+      Y = Y + 24;
+      bottom = true;
+    }
+    return (
+      <React.Fragment>
+        {this.state.isDeletingQuestion ? (
+          <LottieView
+            source={require('../../global/white-loader.json')}
+            autoPlay
+            loop
+          />
+        ) : (
+          <View
+            style={{
+              width: 100,
+              position: 'absolute',
+              backgroundColor: '#E5E5EACC',
+              borderRadius: 8,
+              top: Y,
+              left: X,
+              paddingVertical: 4,
+            }}>
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingVertical: 4,
+                paddingHorizontal: 8,
+              }}
+              onPress={() => {
+                const item = this.state.actionableQuestion;
+                this.setState(
+                  {
+                    showActionModal: false,
+                    actionY: 0,
+                    actionableQuestion: null,
+                    actionableQuestionIndex: null,
+                  },
+                  () => {
+                    this.props.navigation.push('question', {
+                      item,
+                    });
+                  },
+                );
+              }}>
+              <Icon name="edit" size={16} />
+              <View style={{flex: 1}}>
+                <MediumText size={14} textAlign="center">
+                  Reply
+                </MediumText>
+              </View>
+            </TouchableOpacity>
+            {this.state.actionableQuestion &&
+              this.state.UserID === this.state.actionableQuestion.askerID && (
+                <React.Fragment>
+                  <View
+                    style={{height: 1, flex: 1, backgroundColor: '#000000BB'}}
+                  />
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      paddingVertical: 4,
+                      paddingHorizontal: 8,
+                    }}
+                    onPress={this.deleteQuestion}>
+                    <Icon name="trash-2" size={16} color="#E74C3C" />
+                    <View style={{flex: 1}}>
+                      <MediumText size={14} textAlign="center" color="#E74C3C">
+                        Delete
+                      </MediumText>
+                    </View>
+                  </TouchableOpacity>
+                </React.Fragment>
+              )}
+            <View
+              style={[
+                {position: 'absolute', right: 8},
+                bottom ? {top: -8} : {bottom: -8},
+              ]}>
+              <Triangle
+                width={16}
+                height={8}
+                color={'#E5E5EACC'}
+                direction={bottom ? 'up' : 'down'}
+              />
+            </View>
+          </View>
+        )}
+      </React.Fragment>
+    );
+  };
+
+  deleteQuestion = () => {
+    this.setState({isDeletingQuestion: true});
+    getData('JWT').then(jwt => {
+      if (!jwt) NavigationService.navigate('landing');
+      fetch(API + `/question?QuestionID=${this.state.actionableQuestion.id}`, {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: jwt,
+        },
+      })
+        .then(() => {
+          var {data} = this.state;
+          data.splice(this.state.actionableQuestionIndex, 1);
+          this.setState({
+            showActionModal: false,
+            actionY: 0,
+            actionableQuestion: null,
+            actionableQuestionIndex: null,
+            isDeletingQuestion: false,
+          });
+        })
+        .catch(() => NavigationService.navigate('landing'));
+    });
   };
 
   render() {
@@ -225,6 +440,30 @@ export default class Connect extends Component {
             onAdd={this.onAddQuestion}
             onCancel={this.onAddQuestionCancel}
           />
+        </Modal>
+        <Modal
+          transparent
+          visible={this.state.showActionModal}
+          animationType="fade">
+          <TouchableOpacity
+            activeOpacity={1}
+            style={{
+              backgroundColor: '#000000' + 'BB',
+              height,
+              width,
+              position: 'absolute',
+            }}
+            onPress={() => {
+              if (!this.state.isDeletingQuestion)
+                this.setState({
+                  showActionModal: false,
+                  actionY: 0,
+                  actionableQuestion: null,
+                  actionableQuestionIndex: null,
+                });
+            }}>
+            {this.renderActions()}
+          </TouchableOpacity>
         </Modal>
       </SafeAreaView>
     );

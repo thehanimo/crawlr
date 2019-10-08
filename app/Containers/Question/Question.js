@@ -118,6 +118,7 @@ export default class Question extends Component {
       actionY: 0,
       actionX: 0,
       actionableReplyID: null,
+      actionableReplyIndex: null,
       isVerifyingReply: false,
     };
     this.page = 1;
@@ -130,32 +131,24 @@ export default class Question extends Component {
     getData('UserID').then(uid => this.setState({UserID: uid}));
   }
 
-  fetchDataNextPage = (initial, untilCurrentPage, isDelete) => {
+  fetchDataNextPage = initial => {
     const item = this.props.navigation.getParam('item', {});
-    if (untilCurrentPage) var untilPage = this.page;
     if (initial) {
-      if (untilCurrentPage) {
-        var untilPage = this.page;
-        this.page -= 1;
-      } else this.page = 1;
+      this.page = 1;
     }
     getData('JWT').then(jwt => {
       if (!jwt) NavigationService.navigate('landing');
-      fetch(
-        API +
-          `/reply?pageNo=${this.page}&questionID=${item.id}&untilPage=${untilPage}`,
-        {
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: jwt,
-          },
+      fetch(API + `/reply?pageNo=${this.page}&questionID=${item.id}`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: jwt,
         },
-      )
+      })
         .then(response => response.json())
         .then(responseData => {
-          if (responseData.data.length !== 0 || isDelete) {
+          if (responseData.data.length !== 0) {
             this.page += 1;
             var data = this.state.data;
             var newData;
@@ -283,7 +276,7 @@ export default class Question extends Component {
     );
   };
 
-  handlePress = (evt, item) => {
+  handlePress = (evt, item, index) => {
     if (this.state.UserID !== item.UserID) {
       ReactNativeHapticFeedback.trigger('notificationError', {
         enableVibrateFallback: true,
@@ -296,6 +289,7 @@ export default class Question extends Component {
       actionY: evt.nativeEvent.pageY,
       actionX: evt.nativeEvent.pageX,
       actionableReplyID: item.id,
+      actionableReplyIndex: index,
     });
     ReactNativeHapticFeedback.trigger('impactHeavy', {
       enableVibrateFallback: true,
@@ -308,7 +302,7 @@ export default class Question extends Component {
       <TouchableOpacity
         activeOpacity={0.7}
         style={replyStyle}
-        onLongPress={evt => this.handlePress(evt, item)}>
+        onLongPress={evt => this.handlePress(evt, item, index)}>
         <MediumText size={14}>{item.reply}</MediumText>
         {item.isVerified && (
           <CheckIcon>
@@ -371,7 +365,7 @@ export default class Question extends Component {
       <React.Fragment>
         {this.state.isVerifyingReply ? (
           <LottieView
-            source={require('../../global/loader.json')}
+            source={require('../../global/white-loader.json')}
             autoPlay
             loop
           />
@@ -461,14 +455,17 @@ export default class Question extends Component {
         }),
       })
         .then(() => {
+          var {data} = this.state;
+          data[this.state.actionableReplyIndex].isVerified = true;
           this.setState({
             isVerifyingReply: false,
             showActionModal: false,
             actionY: 0,
             actionX: 0,
             actionableReplyID: null,
+            actionableReplyIndex: null,
+            data,
           });
-          this.fetchDataNextPage(true, true);
         })
         .catch(() => NavigationService.navigate('landing'));
     });
@@ -479,27 +476,29 @@ export default class Question extends Component {
     const item = this.props.navigation.getParam('item', {});
     getData('JWT').then(jwt => {
       if (!jwt) NavigationService.navigate('landing');
-      fetch(API + `/reply/delete`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: jwt,
+      fetch(
+        API +
+          `/reply?ReplyID=${this.state.actionableReplyID}&QuestionID=${item.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: jwt,
+          },
         },
-        body: JSON.stringify({
-          ReplyID: this.state.actionableReplyID,
-          QuestionID: item.id,
-        }),
-      })
+      )
         .then(() => {
+          var {data} = this.state;
+          data.splice(this.state.actionableReplyIndex, 1);
           this.setState({
             isVerifyingReply: false,
             showActionModal: false,
             actionY: 0,
             actionX: 0,
             actionableReplyID: null,
+            actionableReplyIndex: null,
           });
-          this.fetchDataNextPage(true, true, true);
         })
         .catch(() => NavigationService.navigate('landing'));
     });
@@ -616,6 +615,7 @@ export default class Question extends Component {
                   actionY: 0,
                   actionX: 0,
                   actionableReplyID: null,
+                  actionableReplyIndex: null,
                 });
             }}>
             {this.renderActions()}

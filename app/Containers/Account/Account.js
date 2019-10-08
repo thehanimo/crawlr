@@ -221,7 +221,7 @@ export default class Account extends Component {
             <CountBanner
               searches={profile.searches}
               questions={profile.questions}
-              replies={profile.replies}
+              karma={profile.karma}
             />
             <View style={{position: 'absolute', bottom: 0, right: width / 30}}>
               <LogoutButton

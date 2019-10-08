@@ -39,7 +39,7 @@ export default class CountBanner extends Component {
             textAlign="center"
             addStyle={{marginHorizontal: 16}}
             numberOfLines={1}>
-            {'Searches'}
+            {this.props.searches === 1 ? 'Search' : 'Searches'}
           </RegularText>
         </View>
 
@@ -56,7 +56,7 @@ export default class CountBanner extends Component {
             textAlign="center"
             addStyle={{marginHorizontal: 16}}
             numberOfLines={1}>
-            {'Questions'}
+            {this.props.questions === 1 ? 'Question' : 'Questions'}
           </RegularText>
         </View>
 
@@ -66,14 +66,14 @@ export default class CountBanner extends Component {
             textAlign="center"
             addStyle={{marginHorizontal: 16, marginTop: 16}}
             numberOfLines={1}>
-            {this.props.replies || '0'}
+            {this.props.karma || '0'}
           </MediumText>
           <RegularText
             size={14}
             textAlign="center"
             addStyle={{marginHorizontal: 16}}
             numberOfLines={1}>
-            {'Replies'}
+            {'Karma'}
           </RegularText>
         </View>
       </View>
