@@ -137,28 +137,40 @@ export default class Question extends Component {
     getData('UserID').then(uid => this.setState({UserID: uid}));
   }
 
-  fetchDataNextPage = initial => {
+  fetchDataNextPage = (initial, untilCurrentPage) => {
+    if (untilCurrentPage) var untilPage = this.page;
     const item = this.props.navigation.getParam('item', {});
     if (initial) {
-      this.page = 1;
+      if (untilCurrentPage) {
+        var untilPage = this.page;
+      } else this.page = 1;
+    } else {
+      if (this.state.refreshing || this.state.fetching) return;
     }
     getData('JWT').then(jwt => {
       if (!jwt) NavigationService.navigate('landing');
-      fetch(API + `/reply?pageNo=${this.page}&questionID=${item.id}`, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: jwt,
+      fetch(
+        API +
+          `/reply?pageNo=${this.page}&untilPage=${
+            untilPage ? untilPage + 1 : null
+          }&questionID=${item.id}`,
+        {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: jwt,
+          },
         },
-      })
+      )
         .then(response => response.json())
         .then(responseData => {
-          if (responseData.data.length !== 0) {
+          if (responseData.data && responseData.data.length !== 0) {
             this.page += 1;
             var data = this.state.data;
             var newData;
-            if (initial) newData = responseData.data;
+            if (responseData.pageNo === 1 || responseData.untilPage)
+              newData = responseData.data;
             else newData = data.concat(responseData.data);
             this.setState({
               data: newData,
@@ -174,7 +186,7 @@ export default class Question extends Component {
             });
           }
         })
-        .catch(() => NavigationService.navigate('landing'));
+        .catch(err => alert(err));
     });
   };
 
@@ -499,15 +511,18 @@ export default class Question extends Component {
         .then(() => {
           var {data} = this.state;
           data[this.state.actionableReplyIndex].isVerified = true;
-          this.setState({
-            isVerifyingReply: false,
-            showActionModal: false,
-            actionY: 0,
-            actionX: 0,
-            actionableReplyID: null,
-            actionableReplyIndex: null,
-            data,
-          });
+          this.setState(
+            {
+              isVerifyingReply: false,
+              showActionModal: false,
+              actionY: 0,
+              actionX: 0,
+              actionableReplyID: null,
+              actionableReplyIndex: null,
+              data,
+            },
+            () => this.fetchDataNextPage(true, true),
+          );
         })
         .catch(() => NavigationService.navigate('landing'));
     });
@@ -533,14 +548,17 @@ export default class Question extends Component {
         .then(() => {
           var {data} = this.state;
           data.splice(this.state.actionableReplyIndex, 1);
-          this.setState({
-            isVerifyingReply: false,
-            showActionModal: false,
-            actionY: 0,
-            actionX: 0,
-            actionableReplyID: null,
-            actionableReplyIndex: null,
-          });
+          this.setState(
+            {
+              isVerifyingReply: false,
+              showActionModal: false,
+              actionY: 0,
+              actionX: 0,
+              actionableReplyID: null,
+              actionableReplyIndex: null,
+            },
+            () => this.fetchDataNextPage(true, true),
+          );
         })
         .catch(() => NavigationService.navigate('landing'));
     });

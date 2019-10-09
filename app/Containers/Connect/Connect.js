@@ -74,8 +74,9 @@ export default class Connect extends Component {
     if (initial) {
       if (untilCurrentPage) {
         var untilPage = this.page;
-        this.page -= 1;
       } else this.page = 1;
+    } else {
+      if (this.state.refreshing || this.state.fetching) return;
     }
     getData('JWT').then(jwt => {
       if (!jwt) {
@@ -84,9 +85,9 @@ export default class Connect extends Component {
       }
       fetch(
         API +
-          `/question/all?pageNo=${
-            untilPage ? this.page + 1 : this.page
-          }&untilPage=${untilPage || null}`,
+          `/question/all?pageNo=${this.page}&untilPage=${
+            untilPage ? untilPage + 1 : null
+          }`,
         {
           method: 'GET',
           headers: {
@@ -102,7 +103,8 @@ export default class Connect extends Component {
             this.page += 1;
             var data = this.state.data;
             var newData;
-            if (initial || this.page === 2) newData = responseData.data;
+            if (responseData.pageNo === 1 || responseData.untilPage)
+              newData = responseData.data;
             else newData = data.concat(responseData.data);
             this.setState({
               data: newData,
@@ -377,13 +379,16 @@ export default class Connect extends Component {
         .then(() => {
           var {data} = this.state;
           data.splice(this.state.actionableQuestionIndex, 1);
-          this.setState({
-            showActionModal: false,
-            actionY: 0,
-            actionableQuestion: null,
-            actionableQuestionIndex: null,
-            isDeletingQuestion: false,
-          });
+          this.setState(
+            {
+              showActionModal: false,
+              actionY: 0,
+              actionableQuestion: null,
+              actionableQuestionIndex: null,
+              isDeletingQuestion: false,
+            },
+            () => this.fetchDataNextPage(true, true),
+          );
         })
         .catch(() => NavigationService.navigate('landing'));
     });
