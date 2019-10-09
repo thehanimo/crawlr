@@ -44,14 +44,16 @@ export default class Landing extends Component {
           if (responseJson) {
             this.props.navigation.setParams({accessToken: ''});
             if (responseJson.JWT) {
-              storeData('JWT', responseJson.JWT).then(() =>
-                this.setState(
-                  {accessToken: '', isAuthenticating: false},
-                  () => {
-                    NavigationService.navigate('connect');
-                  },
-                ),
-              );
+              storeData('JWT', responseJson.JWT).then(() => {
+                storeData('UserID', responseJson.UserID).then(() =>
+                  this.setState(
+                    {accessToken: '', isAuthenticating: false},
+                    () => {
+                      NavigationService.navigate('connect');
+                    },
+                  ),
+                );
+              });
             } else {
               this.setState({accessToken: '', isAuthenticating: false}, () => {
                 NavigationService.navigate('login', {

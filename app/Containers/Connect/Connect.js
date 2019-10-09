@@ -66,8 +66,6 @@ export default class Connect extends Component {
     this._sub = this.props.navigation.addListener('didFocus', () => {
       this.fetchDataNextPage(true, true);
     });
-  }
-  componentWillMount() {
     getData('UserID').then(uid => this.setState({UserID: uid}));
   }
 
