@@ -35,6 +35,7 @@ const PrimaryProfileImage = styled.View`
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
   margin-bottom: 26px;
   elevation: 15;
+  background-color: white;
 `;
 
 const PrimaryTextInput = styled.TextInput`
@@ -144,28 +145,25 @@ export default class Login extends Component {
             <View style={{flex: 1, justifyContent: 'center'}}>
               <View style={{alignItems: 'center'}}>
                 <PrimaryProfileImage>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      height: 146,
+                      width: 146,
+                      borderRadius: 146,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <IconOutline name="user" size={80} color="#8E8E8E" />
+                  </View>
                   <Image
                     source={{uri: this.state.image || profile.image}}
                     style={{
                       height: 146,
                       width: 146,
                       borderRadius: 146,
-                      backgroundColor: 'white',
                     }}
                   />
-                  {!this.state.image && !profile.image && (
-                    <View
-                      style={{
-                        position: 'absolute',
-                        height: 146,
-                        width: 146,
-                        borderRadius: 146,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <IconOutline name="user" size={80} color="#8E8E8E" />
-                    </View>
-                  )}
                   <TouchableOpacity
                     style={{
                       position: 'absolute',

@@ -38,6 +38,7 @@ const SecondaryProfileImage = styled.View`
   border-radius: 12px;
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.16);
   elevation: 8;
+  background-color: white;
 `;
 
 const SmallProfileImage = styled.View`
@@ -46,6 +47,7 @@ const SmallProfileImage = styled.View`
   border-radius: 10px;
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.16);
   elevation: 5;
+  background-color: white;
 `;
 
 const CheckIcon = styled.View`
@@ -239,27 +241,24 @@ export default class Question extends Component {
             marginTop: 16,
           }}>
           <SecondaryProfileImage>
+            <View
+              style={{
+                position: 'absolute',
+                height: 24,
+                width: 24,
+                borderRadius: 12,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <IconOutline name="user" size={12} color="#8E8E8E" />
+            </View>
             <Image
               source={{uri: item.image}}
               style={{
                 height: 24,
                 width: 24,
                 borderRadius: 12,
-                backgroundColor: 'white',
               }}></Image>
-            {!item.image && (
-              <View
-                style={{
-                  position: 'absolute',
-                  height: 24,
-                  width: 24,
-                  borderRadius: 12,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <IconOutline name="user" size={12} color="#8E8E8E" />
-              </View>
-            )}
           </SecondaryProfileImage>
           <View style={{width: 6}} />
           <MediumText size={12}>{item.fullName}</MediumText>
@@ -362,27 +361,24 @@ export default class Question extends Component {
         <RegularText size={10}>{getTimeSince(item.timestamp)}</RegularText>
         <View style={{width: 12}} />
         <SmallProfileImage>
+          <View
+            style={{
+              position: 'absolute',
+              height: 20,
+              width: 20,
+              borderRadius: 10,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <IconOutline name="user" size={10} color="#8E8E8E" />
+          </View>
           <Image
             source={{uri: item.image}}
             style={{
               height: 20,
               width: 20,
               borderRadius: 10,
-              backgroundColor: 'white',
             }}></Image>
-          {!item.image && (
-            <View
-              style={{
-                position: 'absolute',
-                height: 20,
-                width: 20,
-                borderRadius: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <IconOutline name="user" size={10} color="#8E8E8E" />
-            </View>
-          )}
         </SmallProfileImage>
         <View style={{width: 6}} />
         <MediumText size={12}>{item.fullName}</MediumText>

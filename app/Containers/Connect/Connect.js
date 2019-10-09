@@ -38,6 +38,7 @@ const SecondaryProfileImage = styled.View`
   border-radius: 12px;
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.16);
   elevation: 5;
+  background-color: white;
 `;
 
 export default class Connect extends Component {
@@ -185,27 +186,24 @@ export default class Connect extends Component {
         onLongPress={evt => this.handlePress(evt, item, index)}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <SecondaryProfileImage>
+            <View
+              style={{
+                position: 'absolute',
+                height: 24,
+                width: 24,
+                borderRadius: 12,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <IconOutline name="user" size={12} color="#8E8E8E" />
+            </View>
             <Image
               source={{uri: item.image}}
               style={{
                 height: 24,
                 width: 24,
                 borderRadius: 12,
-                backgroundColor: 'white',
               }}></Image>
-            {!item.image && (
-              <View
-                style={{
-                  position: 'absolute',
-                  height: 24,
-                  width: 24,
-                  borderRadius: 12,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <IconOutline name="user" size={12} color="#8E8E8E" />
-              </View>
-            )}
           </SecondaryProfileImage>
           <View style={{width: 6}} />
           <MediumText size={12}>
