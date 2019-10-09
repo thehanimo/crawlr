@@ -153,7 +153,7 @@ export default class Login extends Component {
                       backgroundColor: 'white',
                     }}
                   />
-                  {!this.state.image && (
+                  {!this.state.image && !profile.image && (
                     <View
                       style={{
                         position: 'absolute',

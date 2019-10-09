@@ -247,7 +247,7 @@ export default class Question extends Component {
                 borderRadius: 12,
                 backgroundColor: 'white',
               }}></Image>
-            {!this.state.image && (
+            {!item.image && (
               <View
                 style={{
                   position: 'absolute',
@@ -370,7 +370,7 @@ export default class Question extends Component {
               borderRadius: 10,
               backgroundColor: 'white',
             }}></Image>
-          {!this.state.image && (
+          {!item.image && (
             <View
               style={{
                 position: 'absolute',

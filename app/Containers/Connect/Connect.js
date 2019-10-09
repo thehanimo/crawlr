@@ -193,7 +193,7 @@ export default class Connect extends Component {
                 borderRadius: 12,
                 backgroundColor: 'white',
               }}></Image>
-            {!this.state.image && (
+            {!item.image && (
               <View
                 style={{
                   position: 'absolute',
