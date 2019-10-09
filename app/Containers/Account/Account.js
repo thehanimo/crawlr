@@ -199,8 +199,26 @@ export default class Account extends Component {
             <PrimaryProfileImage>
               <Image
                 source={{uri: profile.image}}
-                style={{height: 146, width: 146, borderRadius: 146}}
+                style={{
+                  height: 146,
+                  width: 146,
+                  borderRadius: 146,
+                  backgroundColor: 'white',
+                }}
               />
+              {!this.state.image && (
+                <View
+                  style={{
+                    position: 'absolute',
+                    height: 146,
+                    width: 146,
+                    borderRadius: 146,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <IconOutline name="user" size={80} color="#8E8E8E" />
+                </View>
+              )}
               <TouchableOpacity
                 style={{
                   position: 'absolute',
@@ -211,6 +229,13 @@ export default class Account extends Component {
                   justifyContent: 'center',
                   alignItems: 'center',
                   borderRadius: 15,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
                   elevation: 10,
                 }}
                 onPress={this.chooseImage}>

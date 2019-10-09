@@ -229,7 +229,25 @@ export default class Question extends Component {
           <SecondaryProfileImage>
             <Image
               source={{uri: item.image}}
-              style={{height: 24, width: 24, borderRadius: 12}}></Image>
+              style={{
+                height: 24,
+                width: 24,
+                borderRadius: 12,
+                backgroundColor: 'white',
+              }}></Image>
+            {!this.state.image && (
+              <View
+                style={{
+                  position: 'absolute',
+                  height: 24,
+                  width: 24,
+                  borderRadius: 12,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <IconOutline name="user" size={12} color="#8E8E8E" />
+              </View>
+            )}
           </SecondaryProfileImage>
           <View style={{width: 6}} />
           <MediumText size={12}>{item.fullName}</MediumText>
@@ -334,7 +352,25 @@ export default class Question extends Component {
         <SmallProfileImage>
           <Image
             source={{uri: item.image}}
-            style={{height: 20, width: 20, borderRadius: 10}}></Image>
+            style={{
+              height: 20,
+              width: 20,
+              borderRadius: 10,
+              backgroundColor: 'white',
+            }}></Image>
+          {!this.state.image && (
+            <View
+              style={{
+                position: 'absolute',
+                height: 20,
+                width: 20,
+                borderRadius: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <IconOutline name="user" size={10} color="#8E8E8E" />
+            </View>
+          )}
         </SmallProfileImage>
         <View style={{width: 6}} />
         <MediumText size={12}>{item.fullName}</MediumText>
