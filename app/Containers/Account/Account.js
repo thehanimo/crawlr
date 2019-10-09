@@ -72,6 +72,7 @@ export default class Account extends Component {
       showEditBio: false,
       isLoading: true,
       image: '',
+      showStars: false,
     };
   }
 
@@ -221,6 +222,7 @@ export default class Account extends Component {
                 style={{
                   position: 'absolute',
                   right: 0,
+                  top: 10,
                   backgroundColor: 'white',
                   height: 30,
                   width: 30,
@@ -239,6 +241,31 @@ export default class Account extends Component {
                 onPress={this.chooseImage}>
                 <IconOutline name="edit" />
               </TouchableOpacity>
+              {profile.isPremiumUser && (
+                <TouchableOpacity
+                  style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: 10,
+                    backgroundColor: '#fbc02d',
+                    height: 30,
+                    width: 30,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 15,
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 10,
+                  }}
+                  onPress={() => this.setState({showStars: true})}>
+                  <IconOutline name="star" />
+                </TouchableOpacity>
+              )}
             </PrimaryProfileImage>
             <RegularText
               size={26}
@@ -338,6 +365,30 @@ export default class Account extends Component {
               visible={this.state.showEditBio}
               animationType="fade">
               <EditBio default={profile.bio} onClose={this.onEditBioClose} />
+            </Modal>
+            <Modal
+              transparent
+              visible={this.state.showStars}
+              animationType="fade">
+              <View
+                style={{
+                  height,
+                  width,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'rgba(255,255,255,0.7)',
+                }}>
+                <LottieView
+                  source={require('../../global/stars.json')}
+                  autoPlay
+                  loop={false}
+                  style={{
+                    height: 200,
+                    width: 200,
+                  }}
+                  onAnimationFinish={() => this.setState({showStars: false})}
+                />
+              </View>
             </Modal>
           </View>
         ) : (

@@ -100,7 +100,11 @@ export default class Connect extends Component {
       )
         .then(response => response.json())
         .then(responseData => {
-          if (responseData.data && responseData.data.length !== 0) {
+          if (
+            (responseData.data && responseData.data.length !== 0) ||
+            responseData.pageNo === 1 ||
+            responseData.untilPage
+          ) {
             this.page += 1;
             var data = this.state.data;
             var newData;

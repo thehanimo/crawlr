@@ -168,6 +168,7 @@ export default class Login extends Component {
                     style={{
                       position: 'absolute',
                       right: 0,
+                      top: 10,
                       backgroundColor: 'white',
                       height: 30,
                       width: 30,
