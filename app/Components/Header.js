@@ -25,7 +25,7 @@ export default class Header extends React.Component {
           paddingTop: 13,
           paddingBottom: 25,
           backgroundColor: COLORS.BG,
-          zIndex: 2,
+          zIndex: 3,
         }}>
         <MediumText textAlign="center">{this.props.title}</MediumText>
         {this.props.showPlusButton && (

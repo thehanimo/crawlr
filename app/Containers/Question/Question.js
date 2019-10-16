@@ -606,6 +606,7 @@ export default class Question extends Component {
             shadowOffset: {width: 0, height: shadowHeight},
             shadowOpacity,
             shadowRadius,
+            zIndex: 2,
           }}
         />
         <FlatList

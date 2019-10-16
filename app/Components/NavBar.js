@@ -18,6 +18,9 @@ import {IconOutline} from '@ant-design/icons-react-native';
 import {RegularText, MediumText} from './Text';
 import Header from './Header';
 import {TextInput} from 'react-native-gesture-handler';
+import {getData} from '../global/localStorage';
+import NavigationService from '../../NavigationService';
+import {API} from '../global/constants';
 
 const {height, width} = Dimensions.get('window');
 
@@ -49,8 +52,40 @@ export default class NavBar extends React.Component {
     super(props);
     this.state = {
       isSearchOpen: false,
+      searchQuery: '',
+      isLoading: false,
     };
   }
+
+  onSearch = () => {
+    if (this.state.isLoading) return;
+    var {searchQuery} = this.state;
+    searchQuery = searchQuery.trim();
+    if (!searchQuery) {
+      this.setState({isSearchOpen: false});
+      return;
+    }
+    this.setState({isLoading: true});
+    getData('JWT').then(jwt => {
+      if (!jwt) NavigationService.navigate('landing');
+      fetch(API + `/search`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: jwt,
+        },
+        body: JSON.stringify({
+          searchQuery,
+        }),
+      })
+        .then(() => {
+          this.setState({isLoading: false, isSearchOpen: false});
+        })
+        .catch(() => NavigationService.navigate('landing'));
+    });
+  };
+
   render() {
     return (
       <View>
@@ -150,8 +185,11 @@ export default class NavBar extends React.Component {
                     autoCapitalize={false}
                     autoCorrect={false}
                     keyboardShouldPersistTaps={'handled'}
+                    onChangeText={text => this.setState({searchQuery: text})}
+                    onSubmitEditing={this.onSearch}
                   />
                   <SearchButton
+                    onPress={this.onSearch}
                     style={{
                       alignSelf: 'flex-end',
                       alignItems: 'center',
@@ -167,6 +205,24 @@ export default class NavBar extends React.Component {
                 </View>
               </KeyboardAvoidingView>
             </View>
+            {this.state.isLoading && (
+              <View
+                style={{
+                  backgroundColor: '#FFFFFFB3',
+                  width,
+                  height,
+                  position: 'absolute',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  zIndex: 3,
+                }}>
+                <LottieView
+                  source={require('../global/loader.json')}
+                  autoPlay
+                  loop
+                />
+              </View>
+            )}
           </SafeAreaView>
         </Modal>
       </View>

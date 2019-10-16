@@ -100,6 +100,8 @@ export default class Connect extends Component {
       )
         .then(response => response.json())
         .then(responseData => {
+          if (initial) var checkedOnce = {checkedOnce: true};
+          else checkedOnce = {};
           if (
             (responseData.data && responseData.data.length !== 0) ||
             responseData.pageNo === 1 ||
@@ -115,13 +117,13 @@ export default class Connect extends Component {
               data: newData,
               fetching: false,
               refreshing: false,
-              checkedOnce: true,
+              ...checkedOnce,
             });
           } else {
             this.setState({
               fetching: false,
               refreshing: false,
-              checkedOnce: true,
+              ...checkedOnce,
             });
           }
         })
@@ -433,6 +435,7 @@ export default class Connect extends Component {
             shadowOffset: {width: 0, height: shadowHeight},
             shadowOpacity,
             shadowRadius,
+            zIndex: 2,
           }}
         />
         <FlatList
@@ -454,6 +457,7 @@ export default class Connect extends Component {
           ListEmptyComponent={this.renderNewsLoader}
           ListFooterComponent={this.renderFooter}
           renderItem={this.renderQuestion}
+          keyExtractor={(item, index) => index.toString()}
           onScroll={Animated.event([
             {nativeEvent: {contentOffset: {y: this.state.scrollY}}},
           ])}

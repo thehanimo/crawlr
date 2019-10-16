@@ -15,6 +15,7 @@ import Trending from './app/Containers/Trending/Trending';
 import Searches from './app/Containers/Searches/Searches';
 import Account from './app/Containers/Account/Account';
 import Question from './app/Containers/Question/Question';
+import Result from './app/Containers/Searches/Result';
 
 const RootStack = createAnimatedSwitchNavigator(
   {
@@ -77,8 +78,18 @@ const RootStack = createAnimatedSwitchNavigator(
             },
           },
         },
-        searches: {
-          screen: Searches,
+        SearchStack: {
+          screen: createStackNavigator(
+            {
+              searches: Searches,
+              result: Result,
+            },
+            {
+              defaultNavigationOptions: {
+                header: null,
+              },
+            },
+          ),
           navigationOptions: {
             tabBarLabel: () => null,
             tabBarIcon: ({tintColor}) => {

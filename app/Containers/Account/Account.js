@@ -293,7 +293,7 @@ export default class Account extends Component {
               </MediumText>
             </TouchableOpacity>
             <CountBanner
-              searches={profile.searches}
+              searches={profile.searches.length}
               questions={profile.questions}
               karma={profile.karma}
             />
