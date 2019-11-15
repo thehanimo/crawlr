@@ -3,6 +3,7 @@ import {TouchableOpacity, View, Animated} from 'react-native';
 import styled from 'styled-components';
 import {RegularText, MediumText} from './Text';
 import {IconFill, IconOutline} from '@ant-design/icons-react-native';
+import {abbrNum} from '../global/constants';
 
 const ActionButton = styled.TouchableOpacity`
   height: 24px;
@@ -74,6 +75,15 @@ export class SearchCard extends React.Component {
       status = <IconOutline name="close-circle" size={26} color="#E74C3C" />;
     else if (this.props.status === 'C')
       status = <IconOutline name="warning" size={26} color="#FED000" />;
+    else if (this.props.points)
+      status = (
+        <View style={{flex: 1, flexDirection: 'row'}}>
+          <IconFill name="trophy" size={26} color="#fbc02d" />
+          <MediumText color="#fbc02d">
+            {abbrNum(this.props.points, 0)}
+          </MediumText>
+        </View>
+      );
     return (
       <TouchableOpacity
         onPress={
@@ -105,7 +115,10 @@ export class SearchCard extends React.Component {
           <View style={{flexDirection: 'row'}}>
             <RegularText
               size={16}
-              addStyle={{width: 260, paddingTop: 4}}
+              addStyle={{
+                width: this.props.points ? 230 : 260,
+                paddingTop: 4,
+              }}
               numberOfLines={1}>
               {this.props.text}
             </RegularText>

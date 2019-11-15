@@ -127,6 +127,7 @@ export default class Question extends Component {
       actionX: 0,
       actionableReplyID: null,
       actionableReplyIndex: null,
+      actionableReplyAskerID: null,
       isVerifyingReply: false,
     };
     this.page = 1;
@@ -316,7 +317,11 @@ export default class Question extends Component {
   };
 
   handlePress = (evt, item, index) => {
-    if (this.state.UserID !== item.UserID) {
+    const question = this.props.navigation.getParam('item', {});
+    if (
+      this.state.UserID !== item.UserID &&
+      this.state.UserID !== question.askerID
+    ) {
       ReactNativeHapticFeedback.trigger('notificationError', {
         enableVibrateFallback: true,
         ignoreAndroidSystemSettings: false,
@@ -329,6 +334,7 @@ export default class Question extends Component {
       actionX: evt.nativeEvent.pageX,
       actionableReplyID: item.id,
       actionableReplyIndex: index,
+      actionableReplyAskerID: item.UserID,
     });
     ReactNativeHapticFeedback.trigger('impactHeavy', {
       enableVibrateFallback: true,
@@ -452,27 +458,31 @@ export default class Question extends Component {
                     </MediumText>
                   </View>
                 </TouchableOpacity>
-                <View
-                  style={{height: 1, flex: 1, backgroundColor: '#000000BB'}}
-                />
+                {this.state.UserID === this.state.actionableReplyAskerID && (
+                  <View
+                    style={{height: 1, flex: 1, backgroundColor: '#000000BB'}}
+                  />
+                )}
               </React.Fragment>
             )}
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingVertical: 4,
-                paddingHorizontal: 8,
-              }}
-              onPress={this.deleteReply}>
-              <Icon name="trash-2" size={16} color="#E74C3C" />
-              <View style={{flex: 1}}>
-                <MediumText size={14} textAlign="center" color="#E74C3C">
-                  Delete
-                </MediumText>
-              </View>
-            </TouchableOpacity>
+            {this.state.UserID === this.state.actionableReplyAskerID && (
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  paddingVertical: 4,
+                  paddingHorizontal: 8,
+                }}
+                onPress={this.deleteReply}>
+                <Icon name="trash-2" size={16} color="#E74C3C" />
+                <View style={{flex: 1}}>
+                  <MediumText size={14} textAlign="center" color="#E74C3C">
+                    Delete
+                  </MediumText>
+                </View>
+              </TouchableOpacity>
+            )}
             <View
               style={[
                 {position: 'absolute', left: 50 - 8},
@@ -519,6 +529,7 @@ export default class Question extends Component {
               actionX: 0,
               actionableReplyID: null,
               actionableReplyIndex: null,
+              actionableReplyAskerID: null,
               data,
             },
             () => this.fetchDataNextPage(true, true),
@@ -556,6 +567,7 @@ export default class Question extends Component {
               actionX: 0,
               actionableReplyID: null,
               actionableReplyIndex: null,
+              actionableReplyAskerID: null,
             },
             () => this.fetchDataNextPage(true, true),
           );
@@ -677,6 +689,7 @@ export default class Question extends Component {
                   actionX: 0,
                   actionableReplyID: null,
                   actionableReplyIndex: null,
+                  actionableReplyAskerID: null,
                 });
             }}>
             {this.renderActions()}

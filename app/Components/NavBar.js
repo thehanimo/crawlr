@@ -81,6 +81,7 @@ export default class NavBar extends React.Component {
       })
         .then(() => {
           this.setState({isLoading: false, isSearchOpen: false});
+          NavigationService.navigate('searches', {searchQuery});
         })
         .catch(() => NavigationService.navigate('landing'));
     });

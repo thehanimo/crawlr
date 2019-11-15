@@ -51,6 +51,17 @@ export default class Searches extends Component {
     this.fetchDataNextPage(true, true);
   };
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      data: [],
+      refreshing: false,
+      fetching: false,
+      checkedOnce: false,
+      scrollY: new Animated.Value(0),
+    });
+    this.fetchDataNextPage(true, true);
+  }
+
   fetchDataNextPage = (initial, untilCurrentPage) => {
     if (untilCurrentPage) var untilPage = this.page;
     if (initial) {
@@ -201,6 +212,7 @@ export default class Searches extends Component {
           }}
         />
         <FlatList
+          extraData={this.state}
           data={this.state.data}
           refreshing={this.state.refreshing}
           onRefresh={() => {
@@ -219,7 +231,7 @@ export default class Searches extends Component {
           ListEmptyComponent={
             !this.state.checkedOnce ? (
               <LottieView
-                source={require('../../global/loader.json')}
+                source={require('../../global/search.json')}
                 autoPlay
                 loop
                 style={{height: 200, width: 200, alignSelf: 'center'}}
