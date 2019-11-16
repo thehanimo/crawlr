@@ -22,13 +22,14 @@ import {SearchCard} from '../../Components/SearchCard';
 import {IconOutline} from '@ant-design/icons-react-native';
 import {getData} from '../../global/localStorage';
 import ResultItem from './ResultItem';
+import ResultImage from './ResultImage';
 
 const {height, width} = Dimensions.get('window');
 const PrimaryProfileImage = styled.View`
-  height: 146px;
-  width: 146px;
-  border-radius: 146px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  height: 80px;
+  width: 80px;
+  border-radius: 40px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
   margin-bottom: 26px;
 `;
 
@@ -67,7 +68,23 @@ export default class Result extends Component {
     });
   };
 
-  renderResultItem = ({item, index}) => <ResultItem item={item} />;
+  renderResultItem = ({item, index}) => (
+    <ResultItem
+      item={item}
+      isImage={item.title === 'Images'}
+      setImRef={c => {
+        this.imRef = c;
+      }}
+      triggerRenderingHack={() => {
+        if (this.imRef && this.imRef.state.open) {
+          this.imRef.close();
+          setTimeout(() => {
+            this.imRef.open();
+          }, 50);
+        }
+      }}
+    />
+  );
 
   render() {
     const shadowRadius = this.state.scrollY.interpolate({

@@ -23,6 +23,7 @@ import Header from '../../Components/Header';
 import {SearchCard} from '../../Components/SearchCard';
 import {IconOutline} from '@ant-design/icons-react-native';
 import {getData} from '../../global/localStorage';
+import ResultImage from './ResultImage';
 
 const {height, width} = Dimensions.get('window');
 
@@ -48,10 +49,13 @@ export default class ResultItem extends Component {
     Animated.timing(this.state.currHeight, {
       toValue: 0,
     }).start(() => this.setState({isOpen: false}));
+    if (!this.props.isImage) {
+      this.props.triggerRenderingHack();
+    }
   };
 
   open = () => {
-    Animated.timing(this.state.currHeight, {
+    Animated.spring(this.state.currHeight, {
       toValue: this.state.dropDownHeight,
     }).start(() => this.setState({isOpen: true}));
   };
@@ -79,15 +83,20 @@ export default class ResultItem extends Component {
       op = 1;
       spin = '270deg';
     }
+
     const {item} = this.props;
+    if (this.props.isImage && item.content.length !== 0) {
+      this.props.setImRef(this);
+    }
     return (
-      <View style={{paddingHorizontal: 16, paddingBottom: 26}}>
+      <View style={{paddingBottom: 26}}>
         <TouchableOpacity onPress={this.toggleHeight}>
           <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
               marginBottom: 12,
+              paddingHorizontal: 16,
             }}>
             {item.Icon.Feather ? (
               <Icon
@@ -124,6 +133,7 @@ export default class ResultItem extends Component {
             height: this.state.currHeight,
             overflow: 'hidden',
             opacity: op,
+            paddingHorizontal: this.props.isImage ? 0 : 16,
           }}
           onLayout={event => {
             if (this.state.dropDownHeight) return;
@@ -133,18 +143,38 @@ export default class ResultItem extends Component {
               currHeight: new Animated.Value(height),
             });
           }}>
-          {item.content.map(data => (
+          {!this.props.isImage &&
+            item.content.length !== 0 &&
+            item.content.map(data => (
+              <View style={{marginBottom: 6}}>
+                <RegularText
+                  size={14}
+                  onPress={data.link ? () => Linking.openURL(data.link) : null}
+                  color={data.link ? '#07689F' : '#000'}
+                  addStyle={{
+                    textDecorationLine: data.link ? 'underline' : null,
+                  }}>
+                  {data.body}
+                  <MediumText size={14}> {data.secondaryBody}</MediumText>
+                </RegularText>
+              </View>
+            ))}
+          {this.props.isImage && item.content.length !== 0 && (
             <View style={{marginBottom: 6}}>
-              <RegularText
-                size={14}
-                onPress={data.link ? () => Linking.openURL(data.link) : null}
-                color={data.link ? '#07689F' : '#000'}
-                addStyle={{textDecorationLine: data.link ? 'underline' : null}}>
-                {data.body}
-                <MediumText size={14}> {data.secondaryBody}</MediumText>
+              <ResultImage data={item.content} />
+            </View>
+          )}
+          {item.content.length === 0 && (
+            <View
+              style={{
+                marginBottom: 6,
+                paddingHorizontal: this.props.isImage ? 16 : 0,
+              }}>
+              <RegularText size={14} color={'#000'}>
+                {'No Results found. 🙁'}
               </RegularText>
             </View>
-          ))}
+          )}
         </Animated.View>
       </View>
     );
