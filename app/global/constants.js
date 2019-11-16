@@ -1,5 +1,5 @@
-// export const API = 'https://crawlr-api.herokuapp.com';
-export const API = 'http://hani.local:3000';
+export const API = 'https://crawlr-api.herokuapp.com';
+// export const API = 'http://hani.local:3000';
 
 export function getTimeSince(t) {
   var timeStamp = new Date(t);
