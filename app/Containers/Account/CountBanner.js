@@ -43,7 +43,10 @@ export default class CountBanner extends Component {
           </RegularText>
         </View>
 
-        <View style={{width: width / 3}}>
+        <TouchableOpacity
+          style={{width: width / 3}}
+          activeOpacity={1}
+          onPress={this.props.onQuestionPress}>
           <MediumText
             size={20}
             textAlign="center"
@@ -58,7 +61,7 @@ export default class CountBanner extends Component {
             numberOfLines={1}>
             {this.props.questions === 1 ? 'Question' : 'Questions'}
           </RegularText>
-        </View>
+        </TouchableOpacity>
 
         <View style={{width: width / 3}}>
           <MediumText

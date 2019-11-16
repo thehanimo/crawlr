@@ -245,35 +245,44 @@ export default class Question extends Component {
             marginHorizontal: 16,
             marginTop: 16,
           }}>
-          <SecondaryProfileImage>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.push('viewProfile', {uid: item.askerID})
+            }
+            style={{flexDirection: 'row', alignItems: 'center'}}>
+            <SecondaryProfileImage>
+              <View
+                style={{
+                  position: 'absolute',
+                  height: 24,
+                  width: 24,
+                  borderRadius: 12,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <IconOutline name="user" size={12} color="#8E8E8E" />
+              </View>
+              <Image
+                source={{uri: item.image}}
+                style={{
+                  height: 24,
+                  width: 24,
+                  borderRadius: 12,
+                }}></Image>
+            </SecondaryProfileImage>
+
+            <View style={{width: 6}} />
+            <MediumText size={12}>{item.fullName}</MediumText>
             <View
               style={{
-                position: 'absolute',
-                height: 24,
-                width: 24,
-                borderRadius: 12,
-                justifyContent: 'center',
-                alignItems: 'center',
+                flex: 1,
+                alignItems: 'flex-end',
               }}>
-              <IconOutline name="user" size={12} color="#8E8E8E" />
+              <RegularText size={10}>
+                {getTimeSince(item.timestamp)}
+              </RegularText>
             </View>
-            <Image
-              source={{uri: item.image}}
-              style={{
-                height: 24,
-                width: 24,
-                borderRadius: 12,
-              }}></Image>
-          </SecondaryProfileImage>
-          <View style={{width: 6}} />
-          <MediumText size={12}>{item.fullName}</MediumText>
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'flex-end',
-            }}>
-            <RegularText size={10}>{getTimeSince(item.timestamp)}</RegularText>
-          </View>
+          </TouchableOpacity>
         </View>
         <View
           style={{
@@ -370,28 +379,34 @@ export default class Question extends Component {
         }}>
         <RegularText size={10}>{getTimeSince(item.timestamp)}</RegularText>
         <View style={{width: 12}} />
-        <SmallProfileImage>
-          <View
-            style={{
-              position: 'absolute',
-              height: 20,
-              width: 20,
-              borderRadius: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <IconOutline name="user" size={10} color="#8E8E8E" />
-          </View>
-          <Image
-            source={{uri: item.image}}
-            style={{
-              height: 20,
-              width: 20,
-              borderRadius: 10,
-            }}></Image>
-        </SmallProfileImage>
-        <View style={{width: 6}} />
-        <MediumText size={12}>{item.fullName}</MediumText>
+        <TouchableOpacity
+          onPress={() =>
+            this.props.navigation.push('viewProfile', {uid: item.UserID})
+          }
+          style={{flexDirection: 'row', alignItems: 'center'}}>
+          <SmallProfileImage>
+            <View
+              style={{
+                position: 'absolute',
+                height: 20,
+                width: 20,
+                borderRadius: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <IconOutline name="user" size={10} color="#8E8E8E" />
+            </View>
+            <Image
+              source={{uri: item.image}}
+              style={{
+                height: 20,
+                width: 20,
+                borderRadius: 10,
+              }}></Image>
+          </SmallProfileImage>
+          <View style={{width: 6}} />
+          <MediumText size={12}>{item.fullName}</MediumText>
+        </TouchableOpacity>
       </View>
     </React.Fragment>
   );

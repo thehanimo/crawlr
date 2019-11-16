@@ -71,6 +71,7 @@ export default class Connect extends Component {
   }
 
   fetchDataNextPage = (initial, untilCurrentPage) => {
+    const uid = this.props.navigation.getParam('uid', false);
     if (untilCurrentPage) var untilPage = this.page;
     if (initial) {
       if (untilCurrentPage) {
@@ -88,7 +89,7 @@ export default class Connect extends Component {
         API +
           `/question/all?pageNo=${this.page}&untilPage=${
             untilPage ? untilPage + 1 : null
-          }`,
+          }${uid ? '&uid=' + uid : null}`,
         {
           method: 'GET',
           headers: {
@@ -191,31 +192,37 @@ export default class Connect extends Component {
         }}
         onLongPress={evt => this.handlePress(evt, item, index)}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <SecondaryProfileImage>
-            <View
-              style={{
-                position: 'absolute',
-                height: 24,
-                width: 24,
-                borderRadius: 12,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <IconOutline name="user" size={12} color="#8E8E8E" />
-            </View>
-            <Image
-              source={{uri: item.image}}
-              style={{
-                height: 24,
-                width: 24,
-                borderRadius: 12,
-              }}></Image>
-          </SecondaryProfileImage>
-          <View style={{width: 6}} />
-          <MediumText size={12}>
-            {firstname}
-            <RegularText size={12}> asks</RegularText>
-          </MediumText>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.push('viewProfile', {uid: item.askerID})
+            }
+            style={{flexDirection: 'row', alignItems: 'center'}}>
+            <SecondaryProfileImage>
+              <View
+                style={{
+                  position: 'absolute',
+                  height: 24,
+                  width: 24,
+                  borderRadius: 12,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <IconOutline name="user" size={12} color="#8E8E8E" />
+              </View>
+              <Image
+                source={{uri: item.image}}
+                style={{
+                  height: 24,
+                  width: 24,
+                  borderRadius: 12,
+                }}></Image>
+            </SecondaryProfileImage>
+            <View style={{width: 6}} />
+            <MediumText size={12}>
+              {firstname}
+              <RegularText size={12}> asks</RegularText>
+            </MediumText>
+          </TouchableOpacity>
           <View
             style={{
               flex: 1,
@@ -414,6 +421,7 @@ export default class Connect extends Component {
       outputRange: [0, 2.5],
       extrapolate: 'clamp',
     });
+    const uid = this.props.navigation.getParam('uid', false);
     return (
       <SafeAreaView
         style={{
@@ -421,9 +429,11 @@ export default class Connect extends Component {
           flex: 1,
         }}>
         <Header
-          title="Connect"
-          showPlusButton
+          title={uid ? 'Questions' : 'Connect'}
+          showPlusButton={uid ? false : true}
           onPlusButtonPress={() => this.setState({showAddQuestion: true})}
+          showBack={uid ? true : false}
+          onPressBack={() => this.props.navigation.goBack()}
         />
         <Animated.View
           style={{

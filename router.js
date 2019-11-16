@@ -16,6 +16,7 @@ import Searches from './app/Containers/Searches/Searches';
 import Account from './app/Containers/Account/Account';
 import Question from './app/Containers/Question/Question';
 import Result from './app/Containers/Searches/Result';
+import Profile from './app/Containers/Connect/Profile';
 
 const RootStack = createAnimatedSwitchNavigator(
   {
@@ -37,6 +38,7 @@ const RootStack = createAnimatedSwitchNavigator(
             {
               connect: Connect,
               question: Question,
+              viewProfile: Profile,
             },
             {
               defaultNavigationOptions: {

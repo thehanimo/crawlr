@@ -105,6 +105,8 @@ export default class Searches extends Component {
             if (responseData.pageNo === 1 || responseData.untilPage)
               newData = responseData.data;
             else newData = data.concat(responseData.data);
+            if (this.state.openMarker && this.state.refreshing)
+              this.state.openMarker.close();
             this.setState({
               data: newData,
               fetching: false,

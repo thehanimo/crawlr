@@ -10,6 +10,7 @@ import {
   Dimensions,
   SafeAreaView,
   Animated,
+  Modal,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 import {COLORS} from '../../global/colors';
@@ -40,6 +41,7 @@ export default class Trending extends Component {
       refreshing: false,
       checkedOnce: false,
       scrollY: new Animated.Value(0),
+      isSearching: false,
     };
   }
 
@@ -90,6 +92,7 @@ export default class Trending extends Component {
             this.state.openMarker.close();
           this.setState({openMarker: marker});
         }}
+        setSearching={state => this.setState({isSearching: state})}
       />
     );
   };
@@ -111,69 +114,89 @@ export default class Trending extends Component {
       extrapolate: 'clamp',
     });
     return (
-      <SafeAreaView
-        style={{
-          backgroundColor: COLORS.BG,
-          flex: 1,
-        }}>
-        <Header title="Trending" />
-
-        <Animated.View
+      <React.Fragment>
+        <SafeAreaView
           style={{
-            height: 10,
-            width,
             backgroundColor: COLORS.BG,
-            marginTop: -10,
-            shadowColor: '#000',
-            shadowOffset: {width: 0, height: shadowHeight},
-            shadowOpacity,
-            shadowRadius,
-            zIndex: 2,
-          }}
-        />
-
-        <FlatList
-          data={this.state.data}
-          refreshing={this.state.refreshing}
-          onRefresh={() => {
-            this.setState({refreshing: true});
-            this.fetchTrending();
-          }}
-          style={{
             flex: 1,
-            paddingTop: 20,
-          }}
-          ListEmptyComponent={
-            !this.state.checkedOnce ? (
-              <LottieView
-                source={require('../../global/chart.json')}
-                autoPlay
-                loop
-                style={{height: 300, width: 300, alignSelf: 'center'}}
-              />
-            ) : (
-              <View>
+          }}>
+          <Header title="Trending" />
+
+          <Animated.View
+            style={{
+              height: 10,
+              width,
+              backgroundColor: COLORS.BG,
+              marginTop: -10,
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: shadowHeight},
+              shadowOpacity,
+              shadowRadius,
+              zIndex: 2,
+            }}
+          />
+
+          <FlatList
+            data={this.state.data}
+            refreshing={this.state.refreshing}
+            onRefresh={() => {
+              this.setState({refreshing: true});
+              this.fetchTrending();
+            }}
+            style={{
+              flex: 1,
+              paddingTop: 20,
+            }}
+            ListEmptyComponent={
+              !this.state.checkedOnce ? (
                 <LottieView
-                  source={require('../../global/lonely-whale.json')}
+                  source={require('../../global/chart.json')}
                   autoPlay
                   loop
-                  style={{height: 200, width: 200, alignSelf: 'center'}}
+                  style={{height: 300, width: 300, alignSelf: 'center'}}
                 />
-                <View style={{marginTop: -40}}>
-                  <MediumText size={14} textAlign="center">
-                    It's so lonely here <MediumText size={26}>💭</MediumText>
-                  </MediumText>
+              ) : (
+                <View>
+                  <LottieView
+                    source={require('../../global/lonely-whale.json')}
+                    autoPlay
+                    loop
+                    style={{height: 200, width: 200, alignSelf: 'center'}}
+                  />
+                  <View style={{marginTop: -40}}>
+                    <MediumText size={14} textAlign="center">
+                      It's so lonely here <MediumText size={26}>💭</MediumText>
+                    </MediumText>
+                  </View>
                 </View>
-              </View>
-            )
-          }
-          renderItem={this.renderTrending}
-          keyExtractor={(item, index) => index.toString()}
-          onScroll={Animated.event([
-            {nativeEvent: {contentOffset: {y: this.state.scrollY}}},
-          ])}
-        />
-      </SafeAreaView>
+              )
+            }
+            renderItem={this.renderTrending}
+            keyExtractor={(item, index) => index.toString()}
+            onScroll={Animated.event([
+              {nativeEvent: {contentOffset: {y: this.state.scrollY}}},
+            ])}
+          />
+        </SafeAreaView>
+        <Modal transparent visible={this.state.isSearching}>
+          <View
+            style={{
+              backgroundColor: '#FFFFFFB3',
+              width,
+              height,
+              position: 'absolute',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 3,
+            }}>
+            <LottieView
+              source={require('../../global/loader.json')}
+              autoPlay
+              loop
+            />
+          </View>
+        </Modal>
+      </React.Fragment>
     );
   }
 }

@@ -3,7 +3,9 @@ import {TouchableOpacity, View, Animated} from 'react-native';
 import styled from 'styled-components';
 import {RegularText, MediumText} from './Text';
 import {IconFill, IconOutline} from '@ant-design/icons-react-native';
-import {abbrNum} from '../global/constants';
+import {abbrNum, API} from '../global/constants';
+import {getData} from '../global/localStorage';
+import NavigationService from '../../NavigationService';
 
 const ActionButton = styled.TouchableOpacity`
   height: 24px;
@@ -11,6 +13,19 @@ const ActionButton = styled.TouchableOpacity`
   border-radius: 34px;
   box-shadow: 0px 0px 10px #0000004d;
   background-color: #e74c3c;
+  padding-horizontal: 16px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  elevation: 5;
+`;
+
+const SearchButton = styled.TouchableOpacity`
+  height: 24px;
+  width: 80px;
+  border-radius: 34px;
+  box-shadow: 0px 0px 10px #0000004d;
+  background-color: #ff7e67;
   padding-horizontal: 16px;
   flex-direction: row;
   align-items: center;
@@ -58,6 +73,31 @@ export class SearchCard extends React.Component {
     ]).start(() => this.setState({isOpen: true}));
   };
 
+  execSearch = () => {
+    this.props.setSearching(true);
+    getData('JWT').then(jwt => {
+      if (!jwt) NavigationService.navigate('landing');
+      fetch(API + `/search`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: jwt,
+        },
+        body: JSON.stringify({
+          searchQuery: this.props.text,
+        }),
+      })
+        .then(() => {
+          this.props.setSearching(false);
+          NavigationService.navigate('searches', {
+            searchQuery: this.props.text,
+          });
+        })
+        .catch(() => NavigationService.navigate('landing'));
+    });
+  };
+
   render() {
     if (
       this.props.currentlyOpenIndex !== 'NotAnIndex' &&
@@ -87,7 +127,7 @@ export class SearchCard extends React.Component {
     return (
       <TouchableOpacity
         onPress={
-          this.props.status === 'P' || this.props.mainError
+          this.props.status === 'P' || this.props.mainError || this.props.points
             ? this.toggleHeight
             : () => {
                 this.props.onRef(this);
@@ -111,6 +151,7 @@ export class SearchCard extends React.Component {
             paddingTop: 14,
             backgroundColor: '#fff',
             alignSelf: 'center',
+            overflow: 'hidden',
           }}>
           <View style={{flexDirection: 'row'}}>
             <RegularText
@@ -131,14 +172,15 @@ export class SearchCard extends React.Component {
               justifyContent: 'flex-end',
               opacity: this.state.buttonOpacity,
             }}>
-            {this.props.mainError ? (
+            {!this.props.points && this.props.mainError && (
               <RegularText
                 size={12}
                 color={this.props.status === 'C' ? '#fbc02d' : '#e74c3c'}
                 numberOfLines={2}>
                 {this.props.mainError}
               </RegularText>
-            ) : (
+            )}
+            {!this.props.points && !this.props.mainError && (
               <ActionButton
                 onPress={() => {
                   this.props.onCancel();
@@ -147,6 +189,16 @@ export class SearchCard extends React.Component {
                   Cancel
                 </RegularText>
               </ActionButton>
+            )}
+            {this.props.points && (
+              <SearchButton
+                onPress={() => {
+                  this.execSearch();
+                }}>
+                <RegularText size={12} color="#fff">
+                  Search
+                </RegularText>
+              </SearchButton>
             )}
           </Animated.View>
         </Animated.View>
